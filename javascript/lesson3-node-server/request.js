@@ -16,10 +16,12 @@ let scriptParams = process.argv.slice(2);
 
 // Нет нужного кол-ва параметров
 if (scriptParams.length < 2) {
+    console.log("Нет нужного кол-ва параметров");
     process.exit(1);
 }
 // Неверно задан тип
 if (!availableTypes.includes(scriptParams[1])) {
+    console.log("Неверно задан тип");
     process.exit(1);
 }
 
@@ -40,12 +42,10 @@ let execSequent = async countRequest => {
             .then(response => console.log(response + i));
     }
 };
-let execParallel = countRequest => {
-    for (let i = 0; i < countRequest; i++) {
-        sendRequest('http://localhost', 8080)
-            .then(response => console.log(response + i));
-    }
-};
+
+let execParallel = countReq => Promise.all(new Array(countReq).fill(0).map(() => {
+    return sendRequest('http://localhost', 8080);
+})).then(console.log);
 
 if (typeParam === PARALLEL_TYPE) execParallel(countReqParam)
 else if (typeParam === SEQUENTIAL_TYPE) execSequent(countReqParam);

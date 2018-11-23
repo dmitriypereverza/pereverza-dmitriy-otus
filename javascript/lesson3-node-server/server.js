@@ -12,7 +12,7 @@ let s = http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
     setInterval(function() {
         res.end('Ok');
-    },1000);
+    }, 100);
     console.log("Send");
 });
 s.listen(8080);
