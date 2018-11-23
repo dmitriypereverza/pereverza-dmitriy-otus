@@ -10,7 +10,7 @@
 let http = require('http');
 let s = http.createServer(function (req, res) {
     res.writeHead(200, {'Content-Type': 'text/plain'});
-    setInterval(function() {
+    setTimeout(function() {
         res.end('Ok');
     }, 100);
     console.log("Send");
