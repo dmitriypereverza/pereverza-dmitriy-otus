@@ -2,6 +2,14 @@
   "name": "pereverza-dmitriy-otus",
   "version": "0.0.1",
   "private": true,
-  "scripts": {},
-  "dependencies": {}
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "jest": "^23.6.0"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  }
 }
