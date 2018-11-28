@@ -1,12 +1,26 @@
 const fileHelper =  require('./filesHelper');
 const assert =  require('assert');
+const mock = require('mock-fs');
+
+mock({
+    'test': {
+        'foo': {
+            'bar': {
+                'baz': {},
+                'bar1.txt': 'test',
+                'bar2.txt': 'test',
+            },
+            'f1.txt': 'test',
+            'f2.txt': 'test',
+        }},
+});
 
 const successResult = {
     "files": [
-        "test/foo/bar/bar1.txt",
-        "test/foo/bar/bar2.txt",
         "test/foo/f1.txt",
-        "test/foo/f2.txt"
+        "test/foo/f2.txt",
+        "test/foo/bar/bar1.txt",
+        "test/foo/bar/bar2.txt"
     ],
     "dirs": [
         "test/foo",
@@ -30,7 +44,7 @@ describe('getFiles()', () => {
 
     test('function must work right', (done) => {
         fileHelper.getFiles(absolute).then(result => {
-            assert.deepEqual(result, successResult);
+            assert.deepEqual(result[0], successResult);
             done();
         });
     });

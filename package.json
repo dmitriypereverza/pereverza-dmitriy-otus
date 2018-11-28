@@ -6,7 +6,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "mock-fs": "^4.7.0"
   },
   "jest": {
     "verbose": true,

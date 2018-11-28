@@ -1,11 +1,25 @@
 const fs = require('fs');
 const path = require('path');
+const mock = require('mock-fs');
+
+mock({
+    'test': {
+        'foo': {
+            'bar': {
+                'baz': {},
+                'bar1.txt': 'test',
+                'bar2.txt': 'test',
+            },
+            'f1.txt': 'test',
+            'f2.txt': 'test',
+    }},
+});
+
 
 const fileHelper =  require('./filesHelper');
 
 if (process.argv.length <= 2) {
-    console.error("Usage: " + __filename);
-    process.exit(-1);
+    throw new Error("Usage: " + __filename);
 }
 // Get cli argument
 let dirPath = process.argv[2];
@@ -16,12 +30,10 @@ if (absolutePath) {
     dirPath = absolutePath;
 }
 if (!fs.existsSync(dirPath)) {
-    console.error(`Error: Directory ${dirPath} not exist.`);
-    process.exit(-1);
+    throw new Error(`Error: Directory ${dirPath} not exist.`);
 }
 if (!fs.statSync(dirPath).isDirectory()) {
-    console.error(`Error: ${dirPath} is not directory.`);
-    process.exit(-1);
+    throw new Error(`Error: ${dirPath} is not directory.`);
 }
 
 function getAbsolutePath(dirPath) {
@@ -31,6 +43,7 @@ function getAbsolutePath(dirPath) {
 }
 
 fileHelper.getFiles(dirPath).then(result => {
-    console.log("Result:", result);
+    console.log("Result:", result[0]);
 });
 
+mock.restore();
