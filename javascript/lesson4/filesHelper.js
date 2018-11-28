@@ -9,7 +9,7 @@ async function getFiles(dir, results) {
     if (!results) {
         results = {files: [], dirs: []}
     }
-    let subDirs = await readdir(dir);
+    const subDirs = await readdir(dir);
     return Promise.all(subDirs.map(async (file) => {
         let absolute = dir + '/' + file;
         let relative = absolute.replace(__dirname + '/', '');

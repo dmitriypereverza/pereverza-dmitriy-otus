@@ -3,7 +3,7 @@ const assert =  require('assert');
 const mock = require('mock-fs');
 
 mock({
-    'test': {
+    '/test': {
         'foo': {
             'bar': {
                 'baz': {},
@@ -50,3 +50,5 @@ describe('getFiles()', () => {
     });
 
 });
+mock.restore();
+

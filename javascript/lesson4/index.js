@@ -2,20 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const mock = require('mock-fs');
 
-mock({
-    'test': {
-        'foo': {
-            'bar': {
-                'baz': {},
-                'bar1.txt': 'test',
-                'bar2.txt': 'test',
-            },
-            'f1.txt': 'test',
-            'f2.txt': 'test',
-    }},
-});
-
-
 const fileHelper =  require('./filesHelper');
 
 if (process.argv.length <= 2) {
@@ -46,4 +32,3 @@ fileHelper.getFiles(dirPath).then(result => {
     console.log("Result:", result[0]);
 });
 
-mock.restore();
