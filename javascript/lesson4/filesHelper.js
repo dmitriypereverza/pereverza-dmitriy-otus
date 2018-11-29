@@ -1,6 +1,7 @@
 let fs = require('fs');
 let { promisify } = require('util');
 let readdir = promisify(fs.readdir);
+let stat = promisify(fs.stat);
 
 async function getFiles(dir, results) {
     if (!dir) {
@@ -13,7 +14,7 @@ async function getFiles(dir, results) {
     return Promise.all(subDirs.map(async (file) => {
         let absolute = dir + '/' + file;
         let relative = absolute.replace(__dirname + '/', '');
-        if (fs.statSync(absolute).isDirectory()) {
+        if ((await stat(absolute)).isDirectory()) {
             results.dirs.push(relative);
             await getFiles(absolute, results);
         } else {
