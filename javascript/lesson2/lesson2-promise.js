@@ -20,18 +20,10 @@ var fn2 = () => new Promise(resolve => {
     setTimeout(() => resolve(2), 1000)
 });
 
-function promiseReduce(asyncFunctions, reduce, initialValue) {
-    return new Promise(resolve => {
-        let currentValue = initialValue;
-        let exec = (promise) => {
-            if (typeof promise !== 'function') return resolve(currentValue);
-            promise().then(response => {
-                currentValue = reduce(currentValue, response);
-                exec(asyncFunctions.shift());
-            })
-        };
-        exec(asyncFunctions.shift());
-    });
+async function promiseReduce(asyncFunctions, reduceFn, initialValue) {
+    return asyncFunctions.reduce(async (memo, asyncFn) => (
+        reduceFn(memo, await asyncFn())
+    ), initialValue)
 }
 
 promiseReduce(
