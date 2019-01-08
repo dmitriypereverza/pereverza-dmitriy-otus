@@ -1,14 +1,14 @@
 const Parser = require('node-xml-stream');
 const FetchStream = require("fetch").FetchStream;
 
-const parse = (url, rssItem, rssChannelId) => {
+const parse = (url, rssItem, rssChannelId, successHandler, errorHandler) => {
     const parser = new Parser();
     const channelId = rssChannelId;
     let item = null;
     let tagName = null;
     let cdataLast = null;
 
-    parser.on('opentag', (name, attrs) => {
+    parser.on('opentag', (name) => {
         tagName = name;
         if (name === "item") {
             item = {};
@@ -27,9 +27,9 @@ const parse = (url, rssItem, rssChannelId) => {
                 const query = {'guid': itemForSave.guid, 'channelId' : itemForSave.channelId};
                 rssItem.findOneAndUpdate(query, itemForSave, {upsert:true}, (err, data) => {
                     if (err) {
-                        console.log("save Error:" + err);
+                        errorHandler("save Error:" + err);
                     } else {
-                        console.log("saved item:" + JSON.stringify(data));
+                        console.log("saved item: " + JSON.stringify(data));
                     }
                 });
                 item = null;
@@ -48,9 +48,8 @@ const parse = (url, rssItem, rssChannelId) => {
         }
     });
 
-    parser.on('error', err => {
-        console.log("error:" + err);
-    });
+    parser.on('error', err => errorHandler("error:" + err));
+    parser.on('finish', () => successHandler("Channel saved"));
 
     const fetch = new FetchStream(url);
     fetch.pipe(parser);

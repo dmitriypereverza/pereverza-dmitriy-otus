@@ -1,0 +1,1 @@
+Можно создать базу через docker (docker run -d --name test -p 27017:27017 mongo)

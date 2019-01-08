@@ -1,12 +1,12 @@
-const saveChannel = (rssChannel, channelId, url) => {
-    const query = {'channelId': channelId};
-    const itemForSave = {'channelId': channelId, 'url': url};
+const saveChannel = (rssChannel, channelId, url, successHandler, errorHandler) => {
+    const query = { channelId };
+    const itemForSave = { channelId, url };
 
     rssChannel.findOneAndUpdate(query, itemForSave, {upsert:true}, (err, data) => {
         if (err) {
-            console.log("save Error:" + err);
+            errorHandler("save Error:" + err);
         } else {
-            console.log("saved item:" + JSON.stringify(data));
+            successHandler("saved item");
         }
     });
 };
@@ -14,23 +14,23 @@ const saveChannel = (rssChannel, channelId, url) => {
 const getChannelList = (rssChannel, cb) => {
     rssChannel.find({}).lean()
         .then(channels => {
-            cb(channels.map(channel => {return {channelId: channel.channelId, url: channel.url};}));
+            cb(channels.map(channel => ({channelId: channel.channelId, url: channel.url })));
         })
         .catch(err => {console.error(err)});
 };
 
-const getRssItems = (rssItem, channelId, cb) => {
+const getRssItems = (rssItem, channelId, cb, errorHandler) => {
     rssItem.find({channelId : channelId}).lean()
         .then(items => {
-            cb(items.map(item => {return             {
+            cb(items.map(item => ({
                 channelId: item.channelId,
                 category: item.category,
                 link: item.link,
                 pubDate: item.pubDate,
                 title: item.title
-            };}));
+            })));
         })
-        .catch(err => {console.error(err)});
+        .catch(err => errorHandler(err));
 };
 
 
