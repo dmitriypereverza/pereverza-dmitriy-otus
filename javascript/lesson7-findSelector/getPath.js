@@ -1,18 +1,17 @@
 function getPath(node) {
+    const getNext = (node) => {
+        const index = Array.from(node.parentNode.children).indexOf(node) + 1;
+        return `${node.nodeName}:nth-child(${index})`;
+    };
+
     let path = [];
-
-    function getNth(element) {
-        const index = Array.from(element.parentNode.children).indexOf(element) + 1;
-        return `${element.nodeName}:nth-child(${index})`;
-    }
-
-    function getParentId(node) {
+    const getParentId = (node) => {
         if (node.id) {
             return "#" + node.id;
         }
-        path.push(getNth(node));
+        path.push(getNext(node));
         return getParentId(node.parentElement);
-    }
+    };
 
     let pathStr = getParentId(node);
     while(path.length > 0) {
