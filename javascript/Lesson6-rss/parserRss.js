@@ -1,39 +1,27 @@
-const Parser = require('node-xml-stream');
+const parserService = require('node-xml-stream');
 const FetchStream = require("fetch").FetchStream;
 
-const parse = (url, rssItem, rssChannelId, successHandler, errorHandler) => {
-    const parser = new Parser();
-    const channelId = rssChannelId;
-    let item = null;
-    let tagName = null;
-    let cdataLast = null;
+const parse = (url, saveParam, successHandler, errorHandler) => {
+    const parser = new parserService();
 
-    parser.on('opentag', (name) => {
-        tagName = name;
-        if (name === "item") {
-            item = {};
-            item["channelId"] = channelId;
-        }
-    });
+    let { channelId, model } = saveParam;
+    let item = null, tagName, cdataLast;
 
-    parser.on('cdata', cdata => {
-        cdataLast = cdata;
-    });
+    parser.on('opentag', name => { tagName = name; if (name === "item") item = { channelId }});
+
+    parser.on('cdata', cdata => cdataLast = cdata);
 
     parser.on('closetag', name => {
-        if (name === "item") {
-            if (item !== null) {
-                const itemForSave = item;
-                const query = {'guid': itemForSave.guid, 'channelId' : itemForSave.channelId};
-                rssItem.findOneAndUpdate(query, itemForSave, {upsert:true}, (err, data) => {
-                    if (err) {
-                        errorHandler("save Error:" + err);
-                    } else {
-                        console.log("saved item: " + JSON.stringify(data));
-                    }
-                });
-                item = null;
-            }
+        if (name === "item" && item !== null) {
+            ({ guid, channelId } = item);
+            model.findOneAndUpdate({ guid, channelId }, item, {upsert:true}, (err, data) => {
+                if (err) {
+                    errorHandler("save Error:" + err);
+                } else {
+                    console.log("saved item");
+                }
+            });
+            item = null;
         }
     });
 

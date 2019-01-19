@@ -20,7 +20,8 @@ app.post('/channel', function(req, res) {
 
     utilRss.saveChannel(RssChannel.model, req.query.channelId, req.query.url,
         () => {
-            parserRss.parse(req.query.url, RssItem.model, req.query.channelId,
+            const saveParams = { model: RssItem.model, channelId: req.query.channelId };
+            parserRss.parse(req.query.url, saveParams,
                 (result) => res.status(200).send(result),
                 (error) => res.status(500).send(error));
         },
