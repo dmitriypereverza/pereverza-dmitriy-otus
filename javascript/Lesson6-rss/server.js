@@ -18,7 +18,8 @@ app.post('/channel', function(req, res) {
         res.status(400).send("error: channelId is not specified");
     }
 
-    utilRss.saveChannel(RssChannel.model, req.query.channelId, req.query.url,
+    const saveParams = { url: req.query.url, channelId: req.query.channelId };
+    utilRss.saveChannel(RssChannel.model, saveParams,
         () => {
             const saveParams = { model: RssItem.model, channelId: req.query.channelId };
             parserRss.parse(req.query.url, saveParams,

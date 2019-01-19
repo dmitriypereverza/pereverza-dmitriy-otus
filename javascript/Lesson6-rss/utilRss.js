@@ -1,8 +1,6 @@
-const saveChannel = (rssChannel, channelId, url, successHandler, errorHandler) => {
-    const query = { channelId };
-    const itemForSave = { channelId, url };
-
-    rssChannel.findOneAndUpdate(query, itemForSave, {upsert:true}, (err, data) => {
+const saveChannel = (rssChannel, saveParams, successHandler, errorHandler) => {
+    ({ channelId: query } = saveParams);
+    rssChannel.findOneAndUpdate(query, saveParams, {upsert:true}, (err, data) => {
         if (err) {
             errorHandler("save Error:" + err);
         } else {
@@ -32,7 +30,6 @@ const getRssItems = (rssItem, channelId, cb, errorHandler) => {
         })
         .catch(err => errorHandler(err));
 };
-
 
 module.exports = {
     saveChannel: saveChannel,
