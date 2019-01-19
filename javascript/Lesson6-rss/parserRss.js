@@ -26,14 +26,11 @@ const parse = (url, saveParam, successHandler, errorHandler) => {
     });
 
     parser.on('text', text => {
-        if (item !== null) {
-            if (cdataLast) {
-                item[tagName] = cdataLast;
-                cdataLast = null;
-            } else {
-                item[tagName] = text;
-            }
+        if (item === null) {
+            return;
         }
+        item[tagName] = cdataLast ? cdataLast : text;
+        cdataLast = cdataLast ? null : cdataLast;
     });
 
     parser.on('error', err => errorHandler("error:" + err));
