@@ -15,16 +15,13 @@ export default class City extends Component {
 
                 <div className="card-info">
                     <div className="card-info-row">
-                        <span>температура, °</span>
-                        {this.props.cityInfo.data.temperature}
+                        <span>температура, {this.props.cityInfo.data.temperature}°</span>
                     </div>
                     <div className="card-info-row">
-                        <span>ветер, м/с</span>
-                        {this.props.cityInfo.data.wind}
+                        <span>ветер, {this.props.cityInfo.data.wind} м/с</span>
                     </div>
                     <div className="card-info-row">
-                        <span>влажность, %</span>
-                        {this.props.cityInfo.data.humidity}
+                        <span>влажность, {this.props.cityInfo.data.humidity}%</span>
                     </div>
                 </div>
                 <div className="card-bottom">

@@ -46,7 +46,7 @@ class App extends Component {
 
     const city = {
         name: this.state.newCityName,
-        data: this.generateWeatherProperty
+        data: this.generateWeatherProperty()
     };
     this.setState({cities : this.state.cities.concat([city])});
 
