@@ -47,3 +47,24 @@ export const WebflowButton = styled.button`
         cursor: pointer;
     }
 `;
+
+export const SuggestList = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 58px;
+  display: flex;
+  flex-direction: column;
+  min-height: 40px;
+`;
+
+export const Suggest = styled.div`
+  min-height: 15px;
+  padding: 10px;
+  background-color: #1d1d1d;
+  color: white;
+  
+  :hover {
+      background-color: #292929;
+      cursor: pointer;
+  }
+`;

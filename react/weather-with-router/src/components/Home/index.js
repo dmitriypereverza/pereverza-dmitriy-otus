@@ -75,11 +75,16 @@ export default class Home extends Component{
             <>
                 <h1>Погода в городах</h1>
                 <div>
+                    {/*<SearchBar type="text"*/}
+                               {/*placeholder="Город..."*/}
+                               {/*onSubmit={this.addCity}*/}
+                               {/*btnText={'Добавить город'}*/}
+                    {/*/>*/}
+                    <br/>
                     <SearchBar type="text"
-                               placeholder="Город..."
-                               onChange={this.handleCityName}
-                               onSubmit={this.addCity}
-                               btnText={'Добавить город'}
+                               placeholder="Поиск города..."
+                               searchItems={this.state.favoriteCities.map(item => item.name)}
+                               onSubmit={console.log}
                     />
                 </div>
                 <CityList cities={this.state.favoriteCities} removeFunc={this.removeCity}/>
