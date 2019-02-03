@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    function createTreeElement(elementName, renderFunction) {
+        customElements.define(elementName, class extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({mode: 'open'});
+            }
+
+            connectedCallback() {
+                let data = Function('"use strict";return (' + this.getAttribute('data') + ')')();
+                this.shadowRoot.innerHTML = renderFunction(data);
+            }
+        });
+    }
+
+    createTreeElement('my-tree', data => {
+        if (!data.items) {
+            throw new DOMException('Element my-tree not have "data.items"!')
+        }
+        let content = data.items.reduce((acc, item) => {
+            let itemStringData = JSON.stringify(item).replace(/["]/g, "'");
+            return acc + ((item.items && item.items.length) ?
+                `<my-tree data="${itemStringData}">${item.id}</my-tree>` :
+                `<my-leaf data="${itemStringData}">${item.id}</my-leaf>`)
+        }, '');
+
+        return `
+            <style>
+                .tree-node {
+                    display: flex;
+                    position: relative;
+                    justify-content: start;
+                    background-color: saddlebrown;
+                    border: 3px dashed whitesmoke;
+                    color: whitesmoke;
+                    padding: 10px;
+                    margin: 10px;
+                }
+                .tree-title {
+                    position: absolute;
+                    color: whitesmoke;
+                    top: 0;
+                    left: 0;
+                }
+            </style>
+            <div class="tree-node">
+                <div class="tree-title">Tree id = ${data.id}</div>
+                ${content}
+            </div>`;
+    });
+
+
+    createTreeElement('my-leaf', element => {
+        return `
+            <style>
+                .leaf {
+                    display: inline-block;
+                    border-radius: 50%;
+                    background-color: green;
+                    color: whitesmoke;
+                    padding: 10px;
+                    margin: 10px;
+                }
+            </style>
+            <div class="leaf">Leaf ${element.id}</div>
+            `;
+    });
+</script>
+
+<my-tree data="{'id':1,'items':[{'id':2,'items':[{'id':3}]},{'id':4,'items':[{'id':5},{'id':6}]}]}">
+</my-tree>
+
+</body>
+</html>
