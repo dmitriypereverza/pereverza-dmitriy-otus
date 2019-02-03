@@ -4,7 +4,7 @@ import Alert from 'react-s-alert';
 import { random } from "./utils/utils";
 
 import CityList from "./components/CityList";
-import Input from "./components/primitive/input";
+import SearchBar from "./components/primitive/input";
 
 import { AppWrapper, GlobalStyle } from "./styled";
 
@@ -18,13 +18,13 @@ const testData = [
 ];
 
 const alertSettings = {position: 'top', effect: 'slide',  timeout: 1000};
-function alert(text, isError = false) {
+function customAlert(text, isError = false) {
     isError ? Alert.error(text, alertSettings) : Alert.success(text, alertSettings);
 }
 
 class App extends Component {
     state = {
-        cities : testData,
+        favoriteCities : testData,
         newCityName: ""
     };
 
@@ -34,15 +34,15 @@ class App extends Component {
 
   addCity = () => {
     if (!this.state.newCityName) {
-        alert('Введите имя города', true);
+        customAlert('Введите имя города', true);
         return;
     }
 
-    const existCity = this.state.cities.find((city) => {
+    const existCity = this.state.favoriteCities.find((city) => {
         return city.name === this.state.newCityName;
     });
     if (existCity) {
-        alert("Город " + this.state.newCityName + " в списке уже есть", true);
+        customAlert(`Город ${this.state.newCityName} в списке уже есть`, true);
         return;
     }
 
@@ -50,18 +50,18 @@ class App extends Component {
         name: this.state.newCityName,
         data: this.generateWeatherProperty()
     };
-    this.setState({cities : this.state.cities.concat([city])});
+    this.setState({favoriteCities : this.state.favoriteCities.concat([city])});
 
-    alert("Город " + this.state.newCityName + " добавлен в список");
+    customAlert(`Город ${this.state.newCityName} добавлен в список`);
   };
 
   removeCity = (cityName) => {
-      const newCities = this.state.cities.slice();
-      this.state.cities.forEach((item, index) => {
+      const newCities = this.state.favoriteCities.slice();
+      this.state.favoriteCities.forEach((item, index) => {
           if (item.name === cityName) {
               newCities.splice(index, 1);
-              this.setState({cities : newCities});
-              alert("Город " + cityName + " удален из списка");
+              this.setState({favoriteCities : newCities});
+              customAlert(`Город ${cityName} удален из списка`);
               return;
           }
       });
@@ -82,15 +82,15 @@ class App extends Component {
             <AppWrapper>
                 <h1>Погода в городах</h1>
                 <div>
-                    <Input type="text"
-                           placeholder="Город..."
-                           value={this.state.newCityName}
-                           onChange={this.handleCityName}
-                           onSubmit={this.addCity}
-                           btnText={'Добавить город'}
+                    <SearchBar type="text"
+                               placeholder="Город..."
+                               value={this.state.newCityName}
+                               onChange={this.handleCityName}
+                               onSubmit={this.addCity}
+                               btnText={'Добавить город'}
                     />
                 </div>
-                <CityList cities={this.state.cities} removeFunc={this.removeCity} />
+                <CityList cities={this.state.favoriteCities} removeFunc={this.removeCity} />
                 <Alert stack={{limit: 3}} />
             </AppWrapper>
         </>
