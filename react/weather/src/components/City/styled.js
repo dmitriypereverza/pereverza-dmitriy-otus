@@ -1,4 +1,6 @@
-.card {
+import styled from 'styled-components';
+
+export const CardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -12,40 +14,40 @@
     border-radius: 10px;
     box-shadow: 0 4px 21px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     overflow: hidden;
-}
+`;
 
-.card-title {
+export const CardTitle = styled.div`
     padding: 15px 15px 0 15px;
     font-weight: bold;
     font-size: 16px;
     text-transform: uppercase;
+`;
 
-}
-
-.card-info {
+export const CardInfo = styled.div`
     padding: 15px;
     display: flex;
     flex-direction: column;
-}
-.card-info-row {
-    display: flex;
-}
+`;
 
-.card-bottom {
+export const CardInfoRow = styled.div`
+    display: flex;
+`;
+
+export const CardBottom = styled.div`
     height: 30px;
     display: flex;
     background-color: #252525;
-}
+`;
 
-.card-bottom button {
+export const CardBottomBtn = styled.button`
     color: whitesmoke;
     width: 100%;
     padding: 5px;
     font-weight: bold;
-}
-
-.card-bottom button:hover {
-    background-color: #57e6e6;
-    color: #1d1d1d;
-    cursor: pointer;
-}
+    
+    :hover {
+        background-color: #57e6e6;
+        color: #1d1d1d;
+        cursor: pointer;
+    }
+`;

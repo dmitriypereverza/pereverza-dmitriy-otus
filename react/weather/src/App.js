@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import Alert from 'react-s-alert';
 
-import CityList from "./components/CityList";
 import { random } from "./utils/utils";
+
+import CityList from "./components/CityList";
 import Input from "./components/primitive/input";
 
-import './App.css';
+import { AppWrapper, GlobalStyle } from "./styled";
+
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
@@ -75,20 +77,23 @@ class App extends Component {
 
   render() {
     return (
-       <div className="App">
-            <h1>Погода в городах</h1>
-            <div>
-                <Input type="text"
-                      placeholder="Город..."
-                      value={this.state.newCityName}
-                      onChange={this.handleCityName}
-                      onSubmit={this.addCity}
-                       btnText={'Добавить город'}
-                />
-            </div>
+        <>
+            <GlobalStyle />
+            <AppWrapper>
+                <h1>Погода в городах</h1>
+                <div>
+                    <Input type="text"
+                           placeholder="Город..."
+                           value={this.state.newCityName}
+                           onChange={this.handleCityName}
+                           onSubmit={this.addCity}
+                           btnText={'Добавить город'}
+                    />
+                </div>
                 <CityList cities={this.state.cities} removeFunc={this.removeCity} />
-            <Alert stack={{limit: 3}} />
-       </div>
+                <Alert stack={{limit: 3}} />
+            </AppWrapper>
+        </>
     );
   }
 }
