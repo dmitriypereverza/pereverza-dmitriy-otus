@@ -25,6 +25,7 @@ class SearchBar extends Component {
         searchItems: [],
     };
 
+    // noinspection JSUnusedGlobalSymbols
     handleClickOutside() {
         this.setState({suggestsOpen: false});
     }
@@ -44,7 +45,7 @@ class SearchBar extends Component {
             return;
         }
         let suggestList = this.props.searchItems.filter(item => {
-            return item.toLowerCase().search(
+            return item.name.toLowerCase().search(
               event.target.value.toLowerCase()) !== -1;
         });
         this.setState({suggestList: suggestList});
@@ -70,7 +71,7 @@ class SearchBar extends Component {
 
               {this.state.suggestsOpen ?
                 <SuggestList>
-                    {this.state.suggestList.map(item => <Suggest key={item}>{item}</Suggest>)}
+                    {this.state.suggestList.map(item => <Suggest key={item}>{item.name}</Suggest>)}
                 </SuggestList>
               : null}
 

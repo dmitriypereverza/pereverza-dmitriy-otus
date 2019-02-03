@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -17,7 +18,9 @@ export default class City extends Component {
     render() {
         return (
             <CardWrapper>
-                <CardTitle>{this.props.cityInfo.name}</CardTitle>
+                <Link to={`/city/${this.props.cityInfo.code}`}>
+                    <CardTitle>{this.props.cityInfo.name}</CardTitle>
+                </Link>
 
                 <CardInfo>
                     <CardInfoRow>
