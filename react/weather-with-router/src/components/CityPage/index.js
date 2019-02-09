@@ -1,13 +1,16 @@
 import React from 'react';
 
 import {
-    WeatherAttrs,
     WeatherCard,
+    WeatherDate,
     WeatherFlow,
     WeatherTemp,
     WeatherTitle,
     WeatherWrapper
 } from "./styled";
+import Wrapper from "../primitive/wrapper";
+import WeatherForecast from "../WeatherForecast";
+import {updateWeather} from "../../utils/cityHelper";
 
 export default class CityPage extends React.Component {
     state = {
@@ -16,15 +19,19 @@ export default class CityPage extends React.Component {
 
     componentDidMount() {
         let cacheCity = JSON.parse(localStorage.getItem('favoriteCity'));
-        if (cacheCity) {
-            let currentCity = cacheCity.find(city => city.code === this.props.match.params.code);
-            console.log(currentCity);
-            this.setState({ currentCity: currentCity });
+        if (!cacheCity) {
+            return;
         }
+        let currentCity = cacheCity.find(city => city.code === this.props.match.params.code);
+        cacheCity = cacheCity.filter(city => city.code !== this.props.match.params.code);
+        const city = updateWeather(currentCity);
+        cacheCity.unshift(city);
+        localStorage.setItem('favoriteCity', JSON.stringify(cacheCity));
+        this.setState({ currentCity: city });
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return this.state.currentCity !== nextState.currentCity;
+        return this.state.currentCity !== nextState.currentCity
     }
 
     render() {
@@ -33,14 +40,19 @@ export default class CityPage extends React.Component {
           <WeatherWrapper>
               <WeatherCard>
                   <WeatherTitle>{ currentCity.name }</WeatherTitle>
+                  <WeatherDate>{ new Date(currentCity.date).toLocaleDateString() }</WeatherDate>
                   <WeatherTemp>{ currentCity.data.temperature } `C</WeatherTemp>
-                  <WeatherAttrs>
-                      <span>{ currentCity.data.temperature }</span>
-                      <span>{ currentCity.data.wind }</span>
-                      <span>{ currentCity.data.humidity }</span>
-                  </WeatherAttrs>
+
+                  <Wrapper column>
+                      <div>температура, {currentCity.data.temperature}°</div>
+                      <div>ветер, {currentCity.data.wind} м/с</div>
+                      <div>влажность, {currentCity.data.humidity}%</div>
+                  </Wrapper>
+        
               </WeatherCard>
-              <WeatherFlow>1</WeatherFlow>
+              <WeatherFlow>
+                  {currentCity.forecast.map((forecast, index) => <WeatherForecast key={index}  {...forecast} />)}
+              </WeatherFlow>
           </WeatherWrapper>
         );
     }

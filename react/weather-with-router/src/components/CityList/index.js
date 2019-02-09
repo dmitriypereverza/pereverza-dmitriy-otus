@@ -6,7 +6,7 @@ import { CityListWrapper } from "./styled";
 
 export default ({cities, removeFunc}) => (
         <CityListWrapper>
-            {cities.map((city) => <City key={city.name} cityInfo={city} removeFunc={removeFunc} />)}
+            {cities.map(city => <City key={city.code} cityInfo={city} removeFunc={removeFunc} />)}
         </CityListWrapper>
 );
 

@@ -63,17 +63,17 @@ class SearchBar extends Component {
                 onFocus={this.onFocus.bind(this)}
                 onChange={this.filterList.bind(this)} />
 
-              {btnText ?
+              {btnText &&
                 <WebflowButton onClick={() => onSubmit(this.state.value)}>
                     {btnText}
                 </WebflowButton>
-                : null}
+                }
 
-              {this.state.suggestsOpen ?
+              {this.state.suggestsOpen &&
                 <SuggestList>
-                    {this.state.suggestList.map(item => <Suggest key={item}>{item.name}</Suggest>)}
+                    {this.state.suggestList.map(item => <Suggest onClick={() => onSubmit(item)} key={item}>{item.name}</Suggest>)}
                 </SuggestList>
-              : null}
+              }
 
           </WebflowWrapper>
         );

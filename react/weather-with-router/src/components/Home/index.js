@@ -1,30 +1,25 @@
 import React, {Component} from 'react';
-import transtit from 'cyrillic-to-translit-js';
-
+import {withRouter} from 'react-router-dom'
 import Alert from "react-s-alert";
 
 import SearchBar from "../primitive/input";
 import CityList from "../CityList";
 
-import { random } from "../../utils/utils";
+import {generateCity} from "../../utils/cityHelper";
 
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
-const testData = [
-    {name: "Москва", code: 'Moskva', data: {temperature: 10, wind: 1 ,humidity: 81}},
-    {name: "Ростов-на-Дону", code: 'Rostov-na-Donu', data: {temperature: 12, wind: 2 ,humidity: 82}},
-    {name: "Омск", code: 'Omsk', data: {temperature: 13, wind: 3 ,humidity: 83}},
-];
+const testData = ["Москва", "Ростов-на-Дону", "Омск"];
 
 const alertSettings = {position: 'top', effect: 'slide',  timeout: 1000};
 function customAlert(text, isError = false) {
     isError ? Alert.error(text, alertSettings) : Alert.success(text, alertSettings);
 }
 
-export default class Home extends Component{
+class Home extends Component{
     state = {
-        favoriteCities : testData,
+        favoriteCities : testData.map(generateCity),
         newCityName: ""
     };
 
@@ -55,13 +50,7 @@ export default class Home extends Component{
             return;
         }
 
-        const city = {
-            name: value,
-            code: transtit().transform(value),
-            data: this.generateWeatherProperty()
-        };
-        this.setState({favoriteCities : this.state.favoriteCities.concat([city])});
-
+        this.setState({favoriteCities : [ ...this.state.favoriteCities, generateCity(value)]});
         customAlert(`Город ${value} добавлен в список`);
     };
 
@@ -77,15 +66,12 @@ export default class Home extends Component{
         });
     };
 
-    generateWeatherProperty() {
-        return {
-            temperature: random(1, 25),
-            wind: random(1, 10),
-            humidity: random(50, 99)
-        }
+    onClickSuggest(city) {
+        this.props.history.push(`/city/${city.code}`);
     }
 
     render() {
+        console.log(this.state.favoriteCities);
         return (
             <>
                 <h1>Погода в городах</h1>
@@ -99,7 +85,7 @@ export default class Home extends Component{
                     <SearchBar type="text"
                                placeholder="Поиск города..."
                                searchItems={this.state.favoriteCities.map(item => ({name: item.name, code: item.code}))}
-                               onSubmit={console.log}
+                               onSubmit={this.onClickSuggest.bind(this)}
                     />
                 </div>
                 <CityList cities={this.state.favoriteCities} removeFunc={this.removeCity}/>
@@ -107,6 +93,6 @@ export default class Home extends Component{
             </>
         );
     }
-};
+}
 
-
+export default withRouter(Home);
