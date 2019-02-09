@@ -39,6 +39,13 @@ export const GlobalStyle = createGlobalStyle`
         text-transform: uppercase;
         color: whitesmoke;
     }
+    a {
+      text-decoration: none;   
+          
+      :visited { color: white; }    
+      :link { color: white; }
+      :hover { color: #57E6E6;}
+    }
 `;
 
 

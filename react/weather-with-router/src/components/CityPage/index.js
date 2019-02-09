@@ -3,7 +3,7 @@ import React from 'react';
 import Wrapper from "../primitive/wrapper";
 import WeatherForecast from "../WeatherForecast";
 
-import { withCityFromCache } from "../../HOC/withLocalCache";
+import { withCityFromCache } from "../../HOC/withCityFromCache";
 
 import {
     WeatherCard,

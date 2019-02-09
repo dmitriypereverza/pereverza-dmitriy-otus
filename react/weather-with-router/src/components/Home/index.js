@@ -9,6 +9,7 @@ import {generateCity} from "../../utils/cityHelper";
 
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
+import withCityFromCache from "../../HOC/withCityFromCache";
 
 const testData = ["Москва", "Ростов-на-Дону", "Омск"];
 
@@ -17,23 +18,11 @@ function customAlert(text, isError = false) {
     isError ? Alert.error(text, alertSettings) : Alert.success(text, alertSettings);
 }
 
-class Home extends Component{
-    state = {
-        favoriteCities : testData.map(generateCity),
-        newCityName: ""
-    };
-
-    componentWillMount() {
-        let cacheCity = localStorage.getItem('favoriteCity');
-        if (cacheCity) {
-            this.setState({'favoriteCities': JSON.parse(cacheCity)});
-            return;
+class Home extends Component {
+    componentDidMount() {
+        if (!this.props.cityStorage) {
+            this.props.saveStorage(testData.map(generateCity));
         }
-        localStorage.setItem('favoriteCity', JSON.stringify(this.state.favoriteCities));
-    }
-
-    componentDidUpdate() {
-        localStorage.setItem('favoriteCity', JSON.stringify(this.state.favoriteCities));
     }
 
     addCity = (value) => {
@@ -42,7 +31,7 @@ class Home extends Component{
             return;
         }
 
-        const existCity = this.state.favoriteCities.find((city) => {
+        const existCity = this.props.cityStorage.find((city) => {
             return city.name === value;
         });
         if (existCity) {
@@ -50,16 +39,17 @@ class Home extends Component{
             return;
         }
 
-        this.setState({favoriteCities : [ ...this.state.favoriteCities, generateCity(value)]});
+        this.props.saveStorage([ ...this.props.getStorage(), generateCity(value)]);
         customAlert(`Город ${value} добавлен в список`);
     };
 
-    removeCity = (cityName) => {
-        const newCities = this.state.favoriteCities.slice();
-        this.state.favoriteCities.forEach((item, index) => {
+    removeCity = cityName => {
+        console.log(cityName);
+        const newCities = this.props.cityStorage.slice();
+        this.props.cityStorage.forEach((item, index) => {
             if (item.name === cityName) {
                 newCities.splice(index, 1);
-                this.setState({favoriteCities : newCities});
+                this.props.saveStorage(newCities);
                 customAlert(`Город ${cityName} удален из списка`);
                 return;
             }
@@ -71,7 +61,7 @@ class Home extends Component{
     }
 
     render() {
-        console.log(this.state.favoriteCities);
+        console.log(this.props);
         return (
             <>
                 <h1>Погода в городах</h1>
@@ -84,15 +74,17 @@ class Home extends Component{
                     <br/>
                     <SearchBar type="text"
                                placeholder="Поиск города..."
-                               searchItems={this.state.favoriteCities.map(item => ({name: item.name, code: item.code}))}
+                               searchItems={this.props.cityStorage
+                                   ? this.props.cityStorage.map(item => ({name: item.name, code: item.code}))
+                                   : []}
                                onSubmit={this.onClickSuggest.bind(this)}
                     />
                 </div>
-                <CityList cities={this.state.favoriteCities} removeFunc={this.removeCity}/>
+                <CityList cities={this.props.cityStorage || []} removeFunc={this.removeCity}/>
                 <Alert stack={{limit: 3}}/>
             </>
         );
     }
 }
 
-export default withRouter(Home);
+export default withRouter(withCityFromCache(Home));
