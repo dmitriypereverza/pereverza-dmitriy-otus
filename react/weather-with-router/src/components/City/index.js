@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -10,38 +10,37 @@ import {
     CardWrapper
 } from "./styled";
 
-export default class City extends Component {
-    removeCity = () => {
-        this.props.removeFunc(this.props.cityInfo.name);
-    };
+export const City = props => {
+    const { name, code, data } = props.cityInfo;
+    return (
+        <CardWrapper>
+            <Link to={`/city/${code}`}>
+                <CardTitle>{name}</CardTitle>
+            </Link>
 
-    render() {
-        return (
-            <CardWrapper>
-                <Link to={`/city/${this.props.cityInfo.code}`}>
-                    <CardTitle>{this.props.cityInfo.name}</CardTitle>
-                </Link>
-
-                <CardInfo>
-                    <CardInfoRow>
-                        <span>температура, {this.props.cityInfo.data.temperature}°</span>
-                    </CardInfoRow>
-                    <CardInfoRow>
-                        <span>ветер, {this.props.cityInfo.data.wind} м/с</span>
-                    </CardInfoRow>
-                    <CardInfoRow>
-                        <span>влажность, {this.props.cityInfo.data.humidity}%</span>
-                    </CardInfoRow>
-                </CardInfo>
-                <CardBottom>
-                    <CardBottomBtn onClick={this.removeCity}>Удалить город</CardBottomBtn>
-                </CardBottom>
-            </CardWrapper>
-        );
-    }
-}
+            <CardInfo>
+                <CardInfoRow>
+                    <span>температура, {data.temperature}°</span>
+                </CardInfoRow>
+                <CardInfoRow>
+                    <span>ветер, {data.wind} м/с</span>
+                </CardInfoRow>
+                <CardInfoRow>
+                    <span>влажность, {data.humidity}%</span>
+                </CardInfoRow>
+            </CardInfo>
+            <CardBottom>
+                <CardBottomBtn onClick={() => props.removeFunc(name)}>
+                    Удалить город
+                </CardBottomBtn>
+            </CardBottom>
+        </CardWrapper>
+    );
+};
 
 City.propTypes = {
     removeFunc: PropTypes.func,
     cityInfo: PropTypes.object
 };
+
+export default City;
