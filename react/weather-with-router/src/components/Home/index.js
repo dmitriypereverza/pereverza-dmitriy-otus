@@ -44,7 +44,6 @@ class Home extends Component {
     };
 
     removeCity = cityName => {
-        console.log(cityName);
         const newCities = this.props.cityStorage.slice();
         this.props.cityStorage.forEach((item, index) => {
             if (item.name === cityName) {
@@ -61,7 +60,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <>
                 <h1>Погода в городах</h1>

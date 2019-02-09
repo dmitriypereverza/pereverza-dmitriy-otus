@@ -49,7 +49,6 @@ class SearchBar extends Component {
               event.target.value.toLowerCase()) !== -1;
         });
         this.setState({suggestList: suggestList});
-        console.log("suggestList", suggestList);
     }
 
     render() {
