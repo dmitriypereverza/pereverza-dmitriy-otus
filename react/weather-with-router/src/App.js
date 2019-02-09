@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { AppWrapper, GlobalStyle } from "./styled";
@@ -6,10 +6,7 @@ import { AppWrapper, GlobalStyle } from "./styled";
 import Home from "./components/Home";
 import CityPage from "./components/CityPage";
 
-class App extends Component {
-
-
-  render() {
+const App = () => {
     return (
       <AppWrapper>
           <GlobalStyle />
@@ -21,7 +18,6 @@ class App extends Component {
         </Router>
       </AppWrapper>
     );
-  }
-}
+};
 
 export default App;

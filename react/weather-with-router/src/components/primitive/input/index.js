@@ -8,6 +8,7 @@ import {
     WebflowInput,
     WebflowWrapper
 } from "./styled";
+import PropTypes from "prop-types";
 
 class SearchBar extends Component {
     state = {
@@ -78,5 +79,13 @@ class SearchBar extends Component {
         );
     }
 }
+
+SearchBar.propTypes = {
+    value: PropTypes.string,
+    type: PropTypes.string,
+    placeholder: PropTypes.string,
+    btnText: PropTypes.string,
+    searchItems: PropTypes.array,
+};
 
 export default clickOutside(SearchBar);

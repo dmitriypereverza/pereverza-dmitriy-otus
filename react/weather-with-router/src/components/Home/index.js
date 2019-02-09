@@ -10,6 +10,7 @@ import {generateCity} from "../../utils/cityHelper";
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import withCityFromCache from "../../HOC/withCityFromCache";
+import PropTypes from "prop-types";
 
 const testData = ["Москва", "Ростов-на-Дону", "Омск"];
 
@@ -39,7 +40,7 @@ class Home extends Component {
             return;
         }
 
-        this.props.saveStorage([ ...this.props.getStorage(), generateCity(value)]);
+        this.props.saveStorage([ ...this.props.cityStorage, generateCity(value)]);
         customAlert(`Город ${value} добавлен в список`);
     };
 
@@ -84,5 +85,10 @@ class Home extends Component {
         );
     }
 }
+Home.propTypes = {
+    currentCity: PropTypes.object,
+    cityStorage: PropTypes.array,
+    saveStorage: PropTypes.func
+};
 
 export default withRouter(withCityFromCache(Home));

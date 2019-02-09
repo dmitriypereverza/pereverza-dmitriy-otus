@@ -9,4 +9,3 @@ export default ({cities, removeFunc}) => (
             {cities.map(city => <City key={city.code} cityInfo={city} removeFunc={removeFunc} />)}
         </CityListWrapper>
 );
-
