@@ -38,10 +38,10 @@
 
     <h2>Настройки</h2>
 
-    <vue-slider v-model="durationSlider.value" v-bind="durationSlider.options"></vue-slider>
-    <span>Длительность {{durationSlider.value}} минут</span>
-    <vue-slider v-model="complexitySlider.value" v-bind="complexitySlider.options"></vue-slider>
-    <span>Сложность {{complexitySlider.value}}</span>
+    <vue-slider v-model="sliders.durationSlider.value" v-bind="sliders.durationSlider.options"></vue-slider>
+    <span>Длительность {{sliders.durationSlider.value}} минут</span>
+    <vue-slider v-model="sliders.complexitySlider.value" v-bind="sliders.complexitySlider.options"></vue-slider>
+    <span>Сложность {{sliders.complexitySlider.value}}</span>
 
     <div class="checkbox-list">
       <div class="checkbox-item">
@@ -72,48 +72,50 @@
 
 </template>
 
-<script>
-  import vueSlider from 'vue-slider-component';
+<script lang="ts">
+    import { Component, Prop, Vue } from 'vue-property-decorator';
+    import vueSlider from 'vue-slider-component/src/vue2-slider.vue';
 
-  export default {
-    components: {
-      vueSlider,
-    },
-    props: ['title'],
-    methods: {
-      submit:  function () {
-        console.log(this.checkBoxes);
-      }
-    },
-    data() {
-      return {
-        durationSlider: {
-          value: 1,
-          options: {
-            min: 1,
-            max: 15,
-            tooltip: false,
-            piecewiseLabel: true,
-          },
-        },
-        complexitySlider: {
-          value: 1,
-          options: {
-            min: 1,
-            max: 10,
-            tooltip: false,
-            piecewiseLabel: true,
-          },
-        },
-        checkBoxes: {
-          checkSums: false,
-          checkDifferent: false,
-          checkMultiple: false,
-          checkSeparation: false,
-          checkPow: false,
+    @Component({
+        components: {
+            vueSlider,
         }
-      };
-    },
-  };
+    })
+    export default class LeftBar extends Vue {
+        @Prop() private title!: string;
 
+        checkBoxes = {
+            checkSums: false,
+            checkDifferent: false,
+            checkMultiple: false,
+            checkSeparation: false,
+            checkPow: false,
+        };
+
+        sliders = {
+            durationSlider: {
+                value: 1,
+                options: {
+                    min: 1,
+                    max: 15,
+                    tooltip: false,
+                    piecewiseLabel: true,
+                },
+            },
+            complexitySlider: {
+                value: 1,
+                options: {
+                    min: 1,
+                    max: 10,
+                    tooltip: false,
+                    piecewiseLabel: true,
+                },
+            },
+        };
+
+        // noinspection JSUnusedLocalSymbols
+        private submit() {
+            console.log(this.checkBoxes);
+        }
+    }
 </script>

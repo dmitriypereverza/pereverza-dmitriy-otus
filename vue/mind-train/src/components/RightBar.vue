@@ -11,8 +11,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: ['msg']
-}
+<script lang="ts">
+    import { Component, Prop, Vue } from 'vue-property-decorator';
+
+    @Component
+    export default class RightBar extends Vue {
+        @Prop() private msg!: string;
+    }
 </script>
