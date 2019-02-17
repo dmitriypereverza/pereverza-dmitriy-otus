@@ -1,6 +1,5 @@
 <style scoped>
   .left {
-    background-color: #7f7f7f;
     width: 100%;
     height: 100%;
     padding: 20px;
@@ -66,7 +65,7 @@
       </div>
     </div>
 
-    <button @click="submit()">OK</button>
+    <button @click="play()">Play</button>
 
   </div>
 
@@ -81,7 +80,7 @@
     },
     props: ['title'],
     methods: {
-      submit:  function () {
+      play:  function () {
         console.log(this.checkBoxes);
       }
     },
