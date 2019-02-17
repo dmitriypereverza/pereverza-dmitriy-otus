@@ -71,48 +71,48 @@
 
 </template>
 
-<script>
-  import vueSlider from 'vue-slider-component';
+<script lang="ts">
+  import { Vue, Component, Prop } from "vue-property-decorator";
+  import vueSlider from 'vue-slider-component/src/vue2-slider.vue';
 
-  export default {
+  @Component({
     components: {
-      vueSlider,
-    },
-    props: ['title'],
-    methods: {
-      play:  function () {
-        console.log(this.checkBoxes);
-      }
-    },
-    data() {
-      return {
-        durationSlider: {
-          value: 1,
-          options: {
-            min: 1,
-            max: 15,
-            tooltip: false,
-            piecewiseLabel: true,
-          },
-        },
-        complexitySlider: {
-          value: 1,
-          options: {
-            min: 1,
-            max: 10,
-            tooltip: false,
-            piecewiseLabel: true,
-          },
-        },
-        checkBoxes: {
-          checkSums: false,
-          checkDifferent: false,
-          checkMultiple: false,
-          checkSeparation: false,
-          checkPow: false,
-        }
-      };
-    },
-  };
+      vueSlider
+    }
+  })
+  export default class RightBar extends Vue {
+    @Prop() private title!: string;
 
+    durationSlider = {
+      value: 1,
+      options: {
+        min: 1,
+        max: 15,
+        tooltip: false,
+        piecewiseLabel: true,
+      },
+    };
+
+    complexitySlider = {
+      value: 1,
+      options: {
+        min: 1,
+        max: 10,
+        tooltip: false,
+        piecewiseLabel: true,
+      },
+    };
+
+    checkBoxes = {
+      checkSums: false,
+      checkDifferent: false,
+      checkMultiple: false,
+      checkSeparation: false,
+      checkPow: false,
+    };
+
+    play () {
+      console.log(this.checkBoxes);
+    }
+  }
 </script>

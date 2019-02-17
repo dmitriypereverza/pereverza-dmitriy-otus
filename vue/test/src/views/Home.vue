@@ -5,20 +5,20 @@
 </style>
   <template>
   <div class="home">
-    <LeftBar title="Welcome to Your Vue.js."/>
+    <GameSettings title="Welcome to Your Vue.js."/>
     <RightBar msg="Welcome to Your Vue.js + TypeScript App"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import RightBar from '@/components/RightBar.vue'; // @ is an alias to /src
-import LeftBar from '@/components/LeftBar.vue'; // @ is an alias to /src
+import RightBar from '../components/RightBar.vue'; // @ is an alias to /src
+import GameSettings from './GameSettings.vue'; // @ is an alias to /src
 
 @Component({
   components: {
     RightBar,
-    LeftBar,
+    GameSettings,
   },
 })
 export default class Home extends Vue {}
