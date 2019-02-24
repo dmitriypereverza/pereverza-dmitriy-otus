@@ -22,7 +22,6 @@ const App = props => {
                 </AppWrapper>
             </PageWrapper>
         </>
-
     );
 };
 
