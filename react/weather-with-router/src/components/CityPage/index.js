@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { connect } from "react-redux";
+
 import Wrapper from "../primitive/wrapper";
 import WeatherForecast from "../WeatherForecast";
 
@@ -15,7 +17,8 @@ import {
 } from "./styled";
 
 export const CityPage = props => {
-    const { currentCity } = props;
+    const { currentCity, changeWeather } = props;
+    changeWeather(currentCity.data);
     return currentCity && (
       <WeatherWrapper>
           <WeatherCard>
@@ -35,4 +38,8 @@ export const CityPage = props => {
     );
 };
 
-export default withCityFromCache(CityPage);
+const mapDispatch = ({ weather: { changeWeather }}) => ({
+    changeWeather: params => changeWeather(params),
+});
+
+export default connect(() => ({}), mapDispatch)(withCityFromCache(CityPage));

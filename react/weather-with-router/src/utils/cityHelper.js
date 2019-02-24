@@ -4,7 +4,7 @@ import  { random }  from "./utils";
 export function generateCity(value) {
     const generateWeatherProperty = () => {
         return {
-            temperature: random(1, 25),
+            temperature: random(-20, 25),
             wind: random(1, 10),
             humidity: random(50, 99)
         }
@@ -26,7 +26,7 @@ export function generateForecast (countDays) {
         date.setDate(date.getDate() + i);
         forecast.push({
             date: date,
-            temperature: random(1, 25),
+            temperature: random(-20, 25),
             wind: random(1, 10),
             humidity: random(50, 99)
         });

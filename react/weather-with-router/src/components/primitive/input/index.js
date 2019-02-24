@@ -76,7 +76,7 @@ class SearchBar extends Component {
 
                     {this.state.suggestsOpen &&
                     <SuggestList>
-                        {this.state.suggestList.map(item => <Suggest onClick={() => onSubmit(item)} key={item}>{item.name}</Suggest>)}
+                        {this.state.suggestList.map(item => <Suggest onClick={() => onSubmit(item)} key={item.name}>{item.name}</Suggest>)}
                     </SuggestList>
                     }
 

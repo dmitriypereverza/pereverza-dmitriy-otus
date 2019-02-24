@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const WeatherWrapper = styled.div`
-  margin: auto;
+  margin: 60px auto auto;
   width: 100%;
   min-height: 50px;
   background-color: #f3f3f3;
