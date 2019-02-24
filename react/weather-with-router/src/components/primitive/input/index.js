@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import clickOutside from 'react-click-outside';
 
 import {
+    FieldWrapper,
+    LabelWrapper,
     Suggest,
     SuggestList,
     WebflowButton,
@@ -20,6 +22,7 @@ class SearchBar extends Component {
 
     static defaultProps = {
         value: '',
+        label: '',
         type: 'text',
         placeholder: '',
         btnText: '',
@@ -53,35 +56,39 @@ class SearchBar extends Component {
     }
 
     render() {
-        let {onSubmit, btnText, type, placeholder} = this.props;
+        let {onSubmit, btnText, type, placeholder, label} = this.props;
         return (
-          <WebflowWrapper>
-              <WebflowInput
-                value={this.state.value}
-                type={type}
-                placeholder={placeholder}
-                onFocus={this.onFocus.bind(this)}
-                onChange={this.filterList.bind(this)} />
+            <FieldWrapper>
+                <LabelWrapper>{ label }</LabelWrapper>
+                <WebflowWrapper>
+                    <WebflowInput
+                        value={this.state.value}
+                        type={type}
+                        placeholder={placeholder}
+                        onFocus={this.onFocus.bind(this)}
+                        onChange={this.filterList.bind(this)} />
 
-              {btnText &&
-                <WebflowButton onClick={() => onSubmit(this.state.value)}>
-                    {btnText}
-                </WebflowButton>
-                }
+                    {btnText &&
+                    <WebflowButton onClick={() => onSubmit(this.state.value)}>
+                        {btnText}
+                    </WebflowButton>
+                    }
 
-              {this.state.suggestsOpen &&
-                <SuggestList>
-                    {this.state.suggestList.map(item => <Suggest onClick={() => onSubmit(item)} key={item}>{item.name}</Suggest>)}
-                </SuggestList>
-              }
+                    {this.state.suggestsOpen &&
+                    <SuggestList>
+                        {this.state.suggestList.map(item => <Suggest onClick={() => onSubmit(item)} key={item}>{item.name}</Suggest>)}
+                    </SuggestList>
+                    }
 
-          </WebflowWrapper>
+                </WebflowWrapper>
+            </FieldWrapper>
         );
     }
 }
 
 SearchBar.propTypes = {
     value: PropTypes.string,
+    label: PropTypes.string,
     type: PropTypes.string,
     placeholder: PropTypes.string,
     btnText: PropTypes.string,

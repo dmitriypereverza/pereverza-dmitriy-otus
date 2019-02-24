@@ -25,6 +25,23 @@ export const WebflowWrapper = styled.div`
     }
 `;
 
+export const FieldWrapper = styled.div`
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+    align-items: baseline;
+`;
+
+export const LabelWrapper = styled.div`
+    color: white; 
+    font-size: 1.8rem;
+    line-height: 2.4rem;
+    vertical-align: middle;
+    margin-right: 20px;
+`;
+
 export const WebflowInput = styled.input`
     padding: 10px;
     color: #BFD2FF;

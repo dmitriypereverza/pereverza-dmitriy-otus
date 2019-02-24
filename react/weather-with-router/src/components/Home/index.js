@@ -12,9 +12,20 @@ import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 import withCityFromCache from "../../HOC/withCityFromCache";
 import PropTypes from "prop-types";
 
-const testData = ["Москва", "Ростов-на-Дону", "Омск"];
+const cityPull = [
+    "Москва",
+    "Ростов-на-Дону",
+    "Омск",
+    "Краснодар",
+    "Орел",
+    "Смоленск",
+    "Воронеж",
+    "Чита",
+    "Азов",
+    "Новочеркасск",
+];
 
-const alertSettings = {position: 'top', effect: 'slide',  timeout: 1000};
+const alertSettings = {position: 'top', effect: 'slide',  timeout: 2000};
 function customAlert(text, isError = false) {
     isError ? Alert.error(text, alertSettings) : Alert.success(text, alertSettings);
 }
@@ -22,13 +33,19 @@ function customAlert(text, isError = false) {
 class Home extends Component {
     componentDidMount() {
         if (!this.props.cityStorage) {
-            this.props.saveStorage(testData.map(generateCity));
+            this.props.saveStorage(cityPull.map(generateCity));
         }
     }
 
     addCity = (value) => {
         if (!value) {
             customAlert('Введите имя города', true);
+            return;
+        }
+
+        const isValidCityName = cityPull.find(cityName => cityName === value);
+        if (!isValidCityName) {
+            customAlert(`Город ${value} не доступен для получения метеоданных`, true);
             return;
         }
 
@@ -72,6 +89,7 @@ class Home extends Component {
                     />
                     <br/>
                     <SearchBar type="text"
+                               label="Найти город:"
                                placeholder="Поиск города..."
                                searchItems={this.props.cityStorage
                                    ? this.props.cityStorage.map(item => ({name: item.name, code: item.code}))
