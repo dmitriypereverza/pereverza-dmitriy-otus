@@ -15,14 +15,8 @@
 </template>
 
 <script>
-  import GameSettings from './views/GameSettings.vue';
-  import RightBar from './components/RightBar.vue';
 
   export default {
-    name: 'app',
-    components: {
-      GameSettings,
-      RightBar,
-    }
+    name: 'app'
   }
 </script>
