@@ -17,8 +17,8 @@ export default new Vuex.Store({
             sub: true,
             mul: true,
             div: true,
-            pow: false
-        }
+            pow: false,
+        },
     },
     getters: {
         daysInTraining: state => dayjs().diff(dayjs(state.trainingStarted).startOf('day'), 'day'),
@@ -26,7 +26,7 @@ export default new Vuex.Store({
         accuracy: state => {
             const total = state.tasksSolved + state.taskFailed;
             return total ? state.tasksSolved * 100 / total : 0;
-        }
+        },
     },
     mutations: {
         changeDuration: (state, value: number) => state.duration = value,
@@ -35,5 +35,5 @@ export default new Vuex.Store({
         addTaskSolved: state => state.tasksSolved = state.tasksSolved + 1,
         addTaskFailed: state => state.taskFailed = state.taskFailed + 1,
     },
-    plugins: [createPersistedState()]
+    plugins: [createPersistedState()],
 });
