@@ -44,26 +44,28 @@
 
     <div class="checkbox-list">
       <div class="checkbox-item">
-        <input type="checkbox" v-model="checkBoxes.checkSums" />
+        <input type="checkbox" v-model="checkBoxes" value="sum" />
         <span>Суммирование</span>
       </div>
       <div class="checkbox-item">
-        <input type="checkbox" v-model="checkBoxes.checkDifferent" />
+        <input type="checkbox" v-model="checkBoxes" value="diff" />
         <span>Разность</span>
       </div>
       <div class="checkbox-item">
-        <input type="checkbox" v-model="checkBoxes.checkMultiple" />
+        <input type="checkbox" v-model="checkBoxes" value="multiple" />
         <span>Умножение</span>
       </div>
       <div class="checkbox-item">
-        <input type="checkbox" v-model="checkBoxes.checkSeparation" />
+        <input type="checkbox" v-model="checkBoxes" value="separation" />
         <span>Деление</span>
       </div>
       <div class="checkbox-item">
-        <input type="checkbox" v-model="checkBoxes.checkPow" />
+        <input type="checkbox" v-model="checkBoxes" value="pow"/>
         <span>Возведение в степень</span>
       </div>
     </div>
+
+    {{ checkBox }}
 
     <button @click="play()">Play</button>
 
@@ -83,6 +85,13 @@
   export default class RightBar extends Vue {
     @Prop() private title!: string;
 
+    public checkBoxes: Array;
+
+    // noinspection JSUnusedGlobalSymbols
+    mounted () {
+      this.checkBoxes = [];
+    }
+
     durationSlider = {
       value: 1,
       options: {
@@ -101,14 +110,6 @@
         tooltip: false,
         piecewiseLabel: true,
       },
-    };
-
-    checkBoxes = {
-      checkSums: false,
-      checkDifferent: false,
-      checkMultiple: false,
-      checkSeparation: false,
-      checkPow: false,
     };
 
     play () {
