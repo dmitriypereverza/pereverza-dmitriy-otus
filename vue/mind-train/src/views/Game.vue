@@ -84,11 +84,11 @@
 <template>
   <div class="right">
     <div class="top-panel">
-      <button class="btn btn-cancel">
+      <button class="btn btn-cancel" @click="stopGame()">
         <span>X </span>
         Отмена
       </button>
-      <div class="btn timer">4:22</div>
+      <div class="btn timer">{{ timeRemained }}</div>
     </div>
 
     <div class="formula">
@@ -127,13 +127,39 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script lang="ts">
     import { Component, Prop, Vue } from 'vue-property-decorator';
+    import { State, Mutation } from 'vuex-class';
+    import moment from "moment";
 
     @Component
     export default class Game extends Vue {
-        @Prop() private msg!: string;
+      @Prop() private msg!: string;
+      @State operations;
+      @State skill;
+      @State duration;
+      @Mutation addTaskSolved;
+      @Mutation addTasksFailed;
+
+      timeStarted = moment();
+      timeRemained = '00:00';
+
+      mounted () {
+        this.tick();
+        setInterval(this.tick, 1000);
+      }
+
+      tick() {
+        const secondsElapsed = moment().diff(this.timeStarted, 'seconds', false);
+        const secondsRemained = this.duration * 60 - secondsElapsed;
+        this.timeRemained = this.formattedTime(secondsRemained);
+      }
+
+      formattedTime (seconds: number): string {
+        return `${Math.floor(seconds / 60)}:${Math.floor(seconds % 60)}`;
+      }
     }
 </script>

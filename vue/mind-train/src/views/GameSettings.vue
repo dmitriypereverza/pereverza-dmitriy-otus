@@ -131,8 +131,8 @@
       this.changeDuration(this.durationSlider.value);
     }
 
-    play () {
-      console.log(this.checkBoxes);
+    play() {
+      this.$router.push('/game');
     }
   }
 </script>
