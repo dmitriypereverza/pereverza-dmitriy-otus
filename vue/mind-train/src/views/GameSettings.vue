@@ -43,20 +43,8 @@
     <span>Сложность {{complexitySlider.value}}</span>
 
     <div class="checkbox-list">
-      <label>
-        <input type="checkbox" v-model="operations.add" @change="onChangeOperations"/> Суммирование
-      </label>
-      <label>
-        <input type="checkbox" v-model="operations.sub" @change="onChangeOperations"/> Разность
-      </label>
-      <label>
-        <input type="checkbox" v-model="operations.mul" @change="onChangeOperations"/> Умножение
-      </label>
-      <label>
-        <input type="checkbox" v-model="operations.div" @change="onChangeOperations"/> Деление
-      </label>
-      <label>
-        <input type="checkbox" v-model="operations.pow" @change="onChangeOperations"/> Возведение в степень
+      <label v-for="operation in operations">
+        <input type="checkbox" v-model="operation.value" @change="onChangeOperations"/> {{operation.title}}
       </label>
     </div>
 

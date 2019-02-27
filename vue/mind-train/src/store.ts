@@ -1,27 +1,27 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import moment from 'moment';
 import createPersistedState from 'vuex-persistedstate';
-import dayjs from 'dayjs';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        trainingStarted: dayjs(),
+        trainingStarted: moment(),
         tasksSolved: 0,
         taskFailed: 0,
         duration: 7,
         skill: 7,
-        operations: {
-            add: true,
-            sub: true,
-            mul: true,
-            div: true,
-            pow: false,
-        },
+        operations: [
+            { code: 'add', value: true, stringDefinition: '+', title: 'Суммирование' },
+            { code: 'sub', value: true, stringDefinition: '-', title: 'Разность' },
+            { code: 'mul', value: true, stringDefinition: '*', title: 'Умножение' },
+            { code: 'div', value: true, stringDefinition: '/', title: 'Деление' },
+            { code: 'pow', value: true, stringDefinition: '^', title: 'Возведение в степень' },
+        ],
     },
     getters: {
-        daysInTraining: state => dayjs().diff(dayjs(state.trainingStarted).startOf('day'), 'day'),
+        daysInTraining: state => moment(moment().diff(state.trainingStarted)).get('days'),
         tasksTotal: state => state.tasksSolved + state.taskFailed,
         accuracy: state => {
             const total = state.tasksSolved + state.taskFailed;
