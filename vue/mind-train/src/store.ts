@@ -21,7 +21,7 @@ export default new Vuex.Store({
         ],
     },
     getters: {
-        daysInTraining: state => moment(moment().diff(state.trainingStarted)).get('days'),
+        daysInTraining: state => moment().diff(state.trainingStarted, 'days'),
         tasksTotal: state => state.tasksSolved + state.taskFailed,
         accuracy: state => {
             const total = state.tasksSolved + state.taskFailed;
