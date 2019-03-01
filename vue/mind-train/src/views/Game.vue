@@ -92,6 +92,7 @@
       this.timeRemained = moment.utc(0).seconds(this.secondsRemained).format('mm:ss');
       if (this.secondsRemained <= 0) {
         this.timerFinish();
+        return;
       }
       this.secondsRemained--;
     }
@@ -114,6 +115,7 @@
           this.question.equalValue < -10 * this.skill
       ) {
         this.generateTask();
+        return;
       }
       this.question.answers = this.question.answers
               .map((val: ActiveInterface, index) => ({ value: '', active: index === 0 }));
@@ -121,6 +123,7 @@
 
     evaluate () {
       const expr = this.expressionStringBuild();
+      console.log(expr);
       return expr.length ? mathjs.eval(expr) : NaN;
     }
 
@@ -177,12 +180,12 @@
     checkResult() {
       this.timerStop();
       const isSuccess = this.question.equalValue === this.evaluate();
+      this.showModal(isSuccess);
       if (isSuccess) {
         this.addTaskSolved();
-      } else {
-        this.addTaskFailed();
+        return;
       }
-      this.showModal(isSuccess);
+      this.addTaskFailed();
     }
 
     showModal (isSuccess: boolean) {

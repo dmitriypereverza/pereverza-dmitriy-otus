@@ -78,8 +78,6 @@
     @Mutation changeDuration;
     @Mutation changeSkill;
 
-    public checkBoxes: any;
-
     durationSlider = {
       value: 0,
       options: {
@@ -107,7 +105,7 @@
     }
 
     // noinspection JSUnusedGlobalSymbols
-    onChangeOperations () {
+    onChangeOperations() {
       this.changeOperations(this.operations);
     }
 
