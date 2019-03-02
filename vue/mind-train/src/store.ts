@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import moment from 'moment';
-import createPersistedState from 'vuex-persistedstate';
+import Vue from "vue";
+import Vuex from "vuex";
+import moment from "moment";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -13,15 +13,15 @@ export default new Vuex.Store({
         duration: 7,
         skill: 7,
         operations: [
-            { code: 'add', value: true, stringDefinition: '+', title: 'Суммирование' },
-            { code: 'sub', value: true, stringDefinition: '-', title: 'Разность' },
-            { code: 'mul', value: true, stringDefinition: '*', title: 'Умножение' },
-            { code: 'div', value: true, stringDefinition: '/', title: 'Деление' },
-            { code: 'pow', value: true, stringDefinition: '^', title: 'Возведение в степень' },
+            { code: "add", value: true, stringDefinition: "+", title: "Суммирование" },
+            { code: "sub", value: true, stringDefinition: "-", title: "Разность" },
+            { code: "mul", value: true, stringDefinition: "*", title: "Умножение" },
+            { code: "div", value: true, stringDefinition: "/", title: "Деление" },
+            { code: "pow", value: true, stringDefinition: "^", title: "Возведение в степень" },
         ],
     },
     getters: {
-        daysInTraining: state => moment().diff(state.trainingStarted, 'days'),
+        daysInTraining: state => moment().diff(state.trainingStarted, "days"),
         tasksTotal: state => state.tasksSolved + state.taskFailed,
         accuracy: state => {
             const total = state.tasksSolved + state.taskFailed;

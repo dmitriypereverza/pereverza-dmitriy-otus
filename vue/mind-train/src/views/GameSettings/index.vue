@@ -1,33 +1,5 @@
-<style scoped>
-  .left {
-    width: 100%;
-    height: 100%;
-    padding: 20px;
-  }
-  .left h1 {
-    font-size: 32px;
-  }
-
-  .left .decsription {
-    font-size: 24px;
-    min-height: 60px;
-  }
-
-  .checkbox-list {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .checkbox-list {
-    display: flex;
-  }
-
-  .checkbox-list .checkbox-item > input {
-    margin-right: 10px;
-  }
-</style>
 <template>
-  <div class="left">
+  <div class="game">
     <h1>{{ title }}</h1>
     <div class="decsription">
       Добро пожаловать на {{ daysInTraining + 1}} тренировочный день.<br/>
@@ -56,16 +28,16 @@
 
 <script lang="ts">
   import { Vue, Component, Prop } from "vue-property-decorator";
-  import vueSlider from 'vue-slider-component/src/vue2-slider.vue';
-  import { State, Getter, Mutation } from 'vuex-class';
+  import vueSlider from "vue-slider-component/src/vue2-slider.vue";
+  import { State, Getter, Mutation } from "vuex-class";
 
   @Component({
     components: {
-      vueSlider
-    }
+      vueSlider,
+    },
   })
   export default class RightBar extends Vue {
-    @Prop() private title!: string;
+    @Prop() public title!: string;
     @State onboardingSeen;
     @State operations;
     @Getter daysInTraining;
@@ -99,7 +71,7 @@
     };
 
     // noinspection JSUnusedGlobalSymbols
-    created () {
+    created() {
       this.durationSlider.value = this.duration;
       this.complexitySlider.value = this.skill;
     }
@@ -118,7 +90,33 @@
     }
 
     play() {
-      this.$router.push('/game');
+      this.$router.push("/game");
     }
   }
 </script>
+
+<style lang="scss" scoped>
+  .game {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+
+    h1 {
+      font-size: 32px;
+    }
+
+    .decsription {
+      font-size: 24px;
+      min-height: 60px;
+    }
+
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+
+      .checkbox-item > input {
+        margin-right: 10px;
+      }
+    }
+  }
+</style>

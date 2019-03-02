@@ -46,17 +46,17 @@
 </template>
 
 <script lang="ts">
-  import { Component, Vue } from 'vue-property-decorator';
-  import { Mutation, State } from 'vuex-class';
+  import { Component, Vue } from "vue-property-decorator";
+  import { Mutation, State } from "vuex-class";
   import moment from "moment";
   import mathjs from "mathjs";
-  import { ActiveInterface, Operation, Question } from "@/Types"
-  import ExpressionViewer from "@/views/ExpressionViewer.vue";
+  import { ActiveInterface, Operation, Question } from "../../Types";
+  import ExpressionViewer from "../../components/ExpressionViewer/index.vue";
 
   @Component({
     components: {
-      ExpressionViewer
-    }
+      ExpressionViewer,
+    },
   })
   export default class Game extends Vue {
     @State operations;
@@ -67,29 +67,29 @@
 
     timer: any;
     secondsRemained = 0;
-    timeRemained = '00:00';
+    timeRemained = "00:00";
 
     question: Question = {
       operands: [],
       answers: [],
       logicalExpr: [],
-      equalValue: 0
+      equalValue: 0,
     };
 
-    created () {
+    created() {
       this.secondsRemained = this.duration * 60;
       this.timerStart();
       this.tick();
 
-      this.question.answers = Array(this.skill).fill('');
-      this.question.operands = Array(1).fill('');
-      this.question.logicalExpr = new Array(this.question.operands.length + this.question.answers.length - 1).fill('');
+      this.question.answers = Array(this.skill).fill("");
+      this.question.operands = Array(1).fill("");
+      this.question.logicalExpr = new Array(this.question.operands.length + this.question.answers.length - 1).fill("");
 
       this.generateTask();
     }
 
     tick() {
-      this.timeRemained = moment.utc(0).seconds(this.secondsRemained).format('mm:ss');
+      this.timeRemained = moment.utc(0).seconds(this.secondsRemained).format("mm:ss");
       if (this.secondsRemained <= 0) {
         this.timerFinish();
         return;
@@ -118,25 +118,24 @@
         return;
       }
       this.question.answers = this.question.answers
-              .map((val: ActiveInterface, index) => ({ value: '', active: index === 0 }));
+              .map((val: ActiveInterface, index) => ({ value: "", active: index === 0 }));
     }
 
-    evaluate () {
+    evaluate() {
       const expr = this.expressionStringBuild();
-      console.log(expr);
       return expr.length ? mathjs.eval(expr) : NaN;
     }
 
-    private expressionStringBuild (): string {
+    expressionStringBuild(): string {
       const allOperands = [...this.question.operands];
-      if (this.question.answers.find((answer: ActiveInterface) => answer.value === '')) {
-        return '';
+      if (this.question.answers.find((answer: ActiveInterface) => answer.value === "")) {
+        return "";
       }
       this.question.answers.forEach((answer: ActiveInterface) => allOperands.push(answer.value));
       const logicalExpressions = [...this.question.logicalExpr];
       return allOperands.reduce((accumulator, operand) => {
-        return `${accumulator} ${operand} ${logicalExpressions.shift() || ''}`
-      }, '');
+        return `${accumulator} ${operand} ${logicalExpressions.shift() || ""}`;
+      }, "");
     }
 
     shiftNextSelectField(offset) {
@@ -153,20 +152,20 @@
       return this.question.answers.findIndex((item: ActiveInterface) => item.active);
     }
 
-    insertNumber(number) {
-      this.question.answers[this.getActiveFieldIndex()].value = number;
+    insertNumber(num) {
+      this.question.answers[this.getActiveFieldIndex()].value = num;
       this.shiftNextSelectField(1);
     }
 
     gameStop() {
       this.timerStop();
       this.addTaskFailed();
-      this.$router.push('/');
+      this.$router.push("/");
     }
 
     timerFinish() {
       this.timerStop();
-      this.$router.push('/');
+      this.$router.push("/");
     }
 
     timerStop() {
@@ -174,7 +173,7 @@
     }
 
     timerStart() {
-      this.timer = setInterval(this.tick, 1000)
+      this.timer = setInterval(this.tick, 1000);
     }
 
     checkResult() {
@@ -188,33 +187,33 @@
       this.addTaskFailed();
     }
 
-    showModal (isSuccess: boolean) {
-      this.$modal.show('dialog', {
+    showModal(isSuccess: boolean) {
+      this.$modal.show(`dialog`, {
         title: isSuccess
-                ? 'Победа'
-                : 'Неудача',
+                ? "Победа"
+                : "Неудача",
         text: isSuccess
-                ? 'Отлично!'
-                : 'К сожалению, это неправильный ответ. Попробуйте еще раз.',
+                ? "Отлично!"
+                : "К сожалению, это неправильный ответ. Попробуйте еще раз.",
         buttons: [
           {
-            title: 'Закрыть',
+            title: "Закрыть",
             default: true,
             handler: () => {
               this.timerStart();
               this.generateTask();
-              this.$modal.hide('dialog');
-            }
-          }
-        ]
-      })
+              this.$modal.hide("dialog");
+            },
+          },
+        ],
+      });
     }
 
     getRandomArrayStringItem(array: string[]): string {
       return array[Math.floor(Math.random() * array.length)];
     }
 
-    getRandomOperand (): string {
+    getRandomOperand(): string {
       return Math.floor(Math.random() * this.skill + 1).toString();
     }
   }
