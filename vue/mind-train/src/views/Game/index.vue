@@ -139,9 +139,14 @@
     }
 
     shiftNextSelectField(offset) {
+      if (!offset) {
+        return;
+      }
       const { answers } = this.question;
-      offset = offset < 0 ? answers.length - (Math.abs(offset) % answers.length) : offset;
       const activeAnswerIndex = answers.findIndex((item: ActiveInterface) => item.active);
+      if (offset < 0) {
+        offset = answers.length - (Math.abs(offset) % answers.length);
+      }
       this.question.answers = answers.map((item: ActiveInterface, index) => {
         item.active = index === (activeAnswerIndex + offset) % answers.length;
         return item;
