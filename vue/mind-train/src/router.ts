@@ -2,12 +2,13 @@ import Vue from "vue";
 import Router from "vue-router";
 
 import GameSettings from "./views/GameSettings/index.vue";
+import { BASE_URL } from "@/config";
 
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
-  base: process.env.BASE_URL,
+  base: BASE_URL,
   routes: [
     {
       path: "/",
