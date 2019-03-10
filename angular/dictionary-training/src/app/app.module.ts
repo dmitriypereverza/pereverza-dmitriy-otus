@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import {
-  MatSliderModule,
+  MatTableModule,
   MatTabsModule,
 } from '@angular/material';
 
@@ -26,10 +26,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
+
     // Angular Material
     BrowserAnimationsModule,
     MatTabsModule,
-    MatSliderModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
