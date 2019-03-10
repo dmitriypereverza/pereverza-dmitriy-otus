@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import {
-  MatSliderModule
+  MatSliderModule,
+  MatTabsModule,
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -27,7 +28,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     // Angular Material
     BrowserAnimationsModule,
-    MatSliderModule
+    MatTabsModule,
+    MatSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
