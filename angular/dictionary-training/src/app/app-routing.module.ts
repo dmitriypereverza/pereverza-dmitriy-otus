@@ -7,7 +7,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { RouteNotFoundComponent } from './route-not-found/route-not-found.component';
 
 const routes: Routes = [
-  { path: '',
+  {
+    path: '',
     redirectTo: '/recently-added',
     pathMatch: 'full'
   },
