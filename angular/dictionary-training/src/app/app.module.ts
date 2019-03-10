@@ -3,10 +3,18 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RecentlyAddedComponent } from './resently-added/recently-added.component';
+import { TrainingComponent } from './training/training.component';
+import { SettingsComponent } from './settings/settings.component';
+import { RouteNotFoundComponent } from './route-not-found/route-not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RecentlyAddedComponent,
+    TrainingComponent,
+    SettingsComponent,
+    RouteNotFoundComponent
   ],
   imports: [
     BrowserModule,
