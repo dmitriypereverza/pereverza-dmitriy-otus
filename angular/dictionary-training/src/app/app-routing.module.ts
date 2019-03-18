@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { RecentlyAddedComponent } from './resently-added/recently-added.component';
-import { TrainingComponent } from './training/training.component';
-import { SettingsComponent } from './settings/settings.component';
-import { RouteNotFoundComponent } from './route-not-found/route-not-found.component';
+import { RecentlyAddedComponent } from './components/resently-added/recently-added.component';
+import { TrainingComponent } from './components/training/training.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { RouteNotFoundComponent } from './components/route-not-found/route-not-found.component';
 
 const routes: Routes = [
   {
