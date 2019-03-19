@@ -5,6 +5,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { MatTableDataSource } from "@angular/material";
 
 export interface PeriodicElement {
+  position: number;
   name: string;
   translate: string;
 }
@@ -16,11 +17,11 @@ export interface PeriodicElement {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecentlyAddedComponent implements OnInit {
-  displayedColumns = ['position', 'name', 'translate'];
+  displayedColumns: string[] = ['select', 'position', 'name', 'translate'];
   dataSource = new MatTableDataSource<PeriodicElement>([
-    { name: 'Hydrogen', translate: 'Водород'},
-    { name: 'Helium', translate: 'Гелий'},
-    { name: 'Lithium', translate: 'Литий'},
+    {position: 1, name: 'Hydrogen', translate: 'Водород'},
+    {position: 2, name: 'Helium', translate: 'Гелий'},
+    {position: 3, name: 'Lithium', translate: 'Литий'},
   ]);
 
   storageKeyList = 'wordList';
@@ -48,7 +49,9 @@ export class RecentlyAddedComponent implements OnInit {
     this.cdr.detectChanges();
     this.translateService.translate(word, 'ru')
       .subscribe((response: TranslateResponse) => {
-        this.dataSource.data.push({ name: word, translate: response.text.pop()});
+        this.dataSource.data.push({position: this.getMaxPosition() + 1, name: word, translate: response.text.pop()});
+        this.dataSource.data = [...this.dataSource.data];
+
         this.storage.save(this.storageKeyList, this.dataSource.data);
       }, null, () => {
         this.text = '';
@@ -57,10 +60,9 @@ export class RecentlyAddedComponent implements OnInit {
       });
   }
 
-  get wordList() {
-    return new MatTableDataSource<PeriodicElement>(
-      this.dataSource.data.map((row: PeriodicElement, index) => ({...row, position: index + 1}))
-    );
+  getMaxPosition() {
+    console.log(this.dataSource.data);
+    return this.dataSource.data.reduce((acc, item) => acc > item.position ? acc : item.position, 1)
   }
 
 
@@ -71,10 +73,20 @@ export class RecentlyAddedComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  checkboxLabel(row?: PeriodicElement, index?): string {
+    return !row
+      ? `${this.isAllSelected() ? 'select' : 'deselect'} all`
+      : `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${index + 1}`;
+  }
+
+  deleteSelection() {
+    const selectedIndexes = this.selection.selected.map(row => row.position);
+    this.dataSource.data = this.dataSource.data.filter(elem => !selectedIndexes.includes(elem.position))
   }
 }

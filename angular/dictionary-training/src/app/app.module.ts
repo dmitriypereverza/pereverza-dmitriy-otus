@@ -9,7 +9,9 @@ import {
   MatInputModule,
   MatFormFieldModule,
   MatProgressSpinnerModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatPaginatorModule,
+  MatButtonModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -42,7 +44,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent],
