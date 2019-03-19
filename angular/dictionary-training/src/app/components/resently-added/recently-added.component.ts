@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from "@angular/material";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatSnackBar, MatSnackBarConfig, MatTableDataSource } from "@angular/material";
 import { SelectionModel } from "@angular/cdk/collections";
 
 import { StorageService } from "../../services/storage/storage.service";
-import { TranslateService, TranslateResponse } from "../../services/translate/translate.service";
 import { DictionaryService, WordInterface } from "../../services/dictionary/dictionary.service";
 
 export interface PeriodicElement {
@@ -19,6 +18,8 @@ export interface PeriodicElement {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecentlyAddedComponent implements OnInit {
+  @ViewChild('checkExist') tplCheckExist: TemplateRef<any>;
+
   displayedColumns: string[] = ['select', 'position', 'name', 'translate'];
   dataSource = new MatTableDataSource<PeriodicElement>([
     {position: 1, name: 'Hydrogen', translate: 'Водород'},
@@ -30,11 +31,14 @@ export class RecentlyAddedComponent implements OnInit {
   text = '';
   loading = false;
   selection = new SelectionModel<PeriodicElement>(true, []);
+  snackBarConfig: MatSnackBarConfig = { duration: 1500, horizontalPosition: "right" };
+
 
   constructor(
     private cdr: ChangeDetectorRef,
     private storage: StorageService,
     private dictionaryService: DictionaryService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -45,7 +49,10 @@ export class RecentlyAddedComponent implements OnInit {
   }
 
   addField(word) {
-    if (!word) return;
+    if (!word || this.checkExist(word)) {
+      this.text = '';
+      return;
+    }
 
     this.loading = true;
     this.cdr.detectChanges();
@@ -66,7 +73,14 @@ export class RecentlyAddedComponent implements OnInit {
 
   }
 
-  getNextPosition() {
+
+  checkExist(word: string) {
+    const isExist = this.dataSource.data.some(item => item.name === word);
+    this.snackBar.openFromTemplate(this.tplCheckExist, this.snackBarConfig);
+    return isExist;
+  }
+
+  private getNextPosition() {
     return (this.dataSource.data.reduce((acc, item) => acc > item.position ? acc : item.position, 1)) + 1
   }
 
@@ -92,6 +106,7 @@ export class RecentlyAddedComponent implements OnInit {
 
   deleteSelection() {
     const selectedIndexes = this.selection.selected.map(row => row.position);
-    this.dataSource.data = this.dataSource.data.filter(elem => !selectedIndexes.includes(elem.position))
+    this.dataSource.data = this.dataSource.data.filter(elem => !selectedIndexes.includes(elem.position));
+    this.storage.save(this.storageKeyList, this.dataSource.data);
   }
 }
