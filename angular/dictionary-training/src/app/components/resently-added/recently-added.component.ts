@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { TranslateService, TranslateResponse } from "../../services/translate/translate.service";
-import { StorageService } from "../../services/storage/storage.service";
-import { SelectionModel } from "@angular/cdk/collections";
 import { MatTableDataSource } from "@angular/material";
+import { SelectionModel } from "@angular/cdk/collections";
+
+import { StorageService } from "../../services/storage/storage.service";
+import { TranslateService, TranslateResponse } from "../../services/translate/translate.service";
+import { DictionaryService, WordInterface } from "../../services/dictionary/dictionary.service";
 
 export interface PeriodicElement {
   position: number;
@@ -30,9 +32,9 @@ export class RecentlyAddedComponent implements OnInit {
   selection = new SelectionModel<PeriodicElement>(true, []);
 
   constructor(
-    private translateService: TranslateService,
     private cdr: ChangeDetectorRef,
     private storage: StorageService,
+    private dictionaryService: DictionaryService,
   ) {}
 
   ngOnInit() {
@@ -47,22 +49,25 @@ export class RecentlyAddedComponent implements OnInit {
 
     this.loading = true;
     this.cdr.detectChanges();
-    this.translateService.translate(word, 'ru')
-      .subscribe((response: TranslateResponse) => {
-        this.dataSource.data.push({position: this.getMaxPosition() + 1, name: word, translate: response.text.pop()});
-        this.dataSource.data = [...this.dataSource.data];
 
+    const rawWord = {
+      name: word,
+      position: this.getNextPosition()
+    };
+    this.dictionaryService.create(rawWord)
+      .subscribe((word: WordInterface) => {
+        this.dataSource.data = [...this.dataSource.data, word];
         this.storage.save(this.storageKeyList, this.dataSource.data);
       }, null, () => {
         this.text = '';
         this.loading = false;
         this.cdr.detectChanges();
       });
+
   }
 
-  getMaxPosition() {
-    console.log(this.dataSource.data);
-    return this.dataSource.data.reduce((acc, item) => acc > item.position ? acc : item.position, 1)
+  getNextPosition() {
+    return (this.dataSource.data.reduce((acc, item) => acc > item.position ? acc : item.position, 1)) + 1
   }
 
 
