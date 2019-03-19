@@ -12,7 +12,8 @@ import {
   MatCheckboxModule,
   MatPaginatorModule,
   MatButtonModule,
-  MatSelectModule
+  MatSelectModule,
+  MatCardModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -48,7 +49,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatCheckboxModule,
     MatPaginatorModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent],
