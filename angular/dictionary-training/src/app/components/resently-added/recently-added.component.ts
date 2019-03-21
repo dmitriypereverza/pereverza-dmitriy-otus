@@ -5,11 +5,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { StorageService } from "../../services/storage/storage.service";
 import { DictionaryService, WordInterface } from "../../services/dictionary/dictionary.service";
 
-export interface PeriodicElement {
-  position: number;
-  name: string;
-  translate: string;
-}
+import config from "../../config";
 
 @Component({
   selector: 'app-recently-added',
@@ -20,17 +16,16 @@ export interface PeriodicElement {
 export class RecentlyAddedComponent implements OnInit {
   @ViewChild('checkExist') tplCheckExist: TemplateRef<any>;
 
-  displayedColumns: string[] = ['select', 'position', 'name', 'translate'];
-  dataSource = new MatTableDataSource<PeriodicElement>([
+  displayedColumns: string[] = ['select', 'position', 'name', 'translate', 'learningProgress'];
+  dataSource = new MatTableDataSource<WordInterface>([
     {position: 1, name: 'Hydrogen', translate: 'Водород'},
     {position: 2, name: 'Helium', translate: 'Гелий'},
     {position: 3, name: 'Lithium', translate: 'Литий'},
   ]);
 
-  storageKeyList = 'wordList';
   text = '';
   loading = false;
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  selection = new SelectionModel<WordInterface>(true, []);
   snackBarConfig: MatSnackBarConfig = { duration: 1500, horizontalPosition: "right" };
 
 
@@ -42,7 +37,7 @@ export class RecentlyAddedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const elements = this.storage.get(this.storageKeyList);
+    const elements = this.dictionaryService.getWordList();
     if (elements) {
       this.dataSource.data = elements;
     }
@@ -64,7 +59,7 @@ export class RecentlyAddedComponent implements OnInit {
     this.dictionaryService.create(rawWord)
       .subscribe((word: WordInterface) => {
         this.dataSource.data = [...this.dataSource.data, word];
-        this.storage.save(this.storageKeyList, this.dataSource.data);
+        this.storage.save(config.storageKeyList, this.dataSource.data);
       }, null, () => {
         this.text = '';
         this.loading = false;
@@ -76,7 +71,7 @@ export class RecentlyAddedComponent implements OnInit {
 
   checkExist(word: string) {
     const isExist = this.dataSource.data.some(item => item.name === word);
-    this.snackBar.openFromTemplate(this.tplCheckExist, this.snackBarConfig);
+    isExist && this.snackBar.openFromTemplate(this.tplCheckExist, this.snackBarConfig);
     return isExist;
   }
 
@@ -98,7 +93,7 @@ export class RecentlyAddedComponent implements OnInit {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  checkboxLabel(row?: PeriodicElement, index?): string {
+  checkboxLabel(row?: WordInterface, index?): string {
     return !row
       ? `${this.isAllSelected() ? 'select' : 'deselect'} all`
       : `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${index + 1}`;
@@ -107,6 +102,10 @@ export class RecentlyAddedComponent implements OnInit {
   deleteSelection() {
     const selectedIndexes = this.selection.selected.map(row => row.position);
     this.dataSource.data = this.dataSource.data.filter(elem => !selectedIndexes.includes(elem.position));
-    this.storage.save(this.storageKeyList, this.dataSource.data);
+    this.storage.save(config.storageKeyList, this.dataSource.data);
+  }
+
+  progressInPercent(item: WordInterface) {
+    return (item.learningProgress / config.maxTrainingProgress) * 100;
   }
 }

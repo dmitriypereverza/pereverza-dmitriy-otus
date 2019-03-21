@@ -1,17 +1,30 @@
 <div class="training-wrapper">
   <mat-card class="train-card">
     <img mat-card-image src="https://biznesbrend.ru/wp-content/uploads/2013/10/pamyat.jpg">
-    <mat-card-header>
-      <mat-card-title>Как пишется слово: {{ word }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-actions [align]="'end'">
-      <button mat-stroked-button>Не знаю</button>
-    </mat-card-actions>
+
+
+    <ng-container *ngIf="trainingWord">
+      <mat-card-header>
+        <mat-card-title>Как пишется слово: {{ trainingWord.translate }}</mat-card-title>
+      </mat-card-header>
+      <div class="result" >
+        <div class="result-text">
+          <div class="success" *ngIf="isAnswered && isSuccess">Верно</div>
+          <div class="error" *ngIf="isAnswered && !isSuccess">Не верно</div>
+        </div>
+        <button mat-stroked-button (click)="doNotNow()">Не знаю</button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!trainingWord">
+      <h2>Добавьте новые слова для треннировки</h2>
+    </ng-container>
   </mat-card>
 
-  <div class="answer-field">
+  <div class="answer-field" *ngIf="trainingWord">
     <mat-form-field>
-      <input matInput placeholder="Введите перевод">
+      <input matInput placeholder="Введите перевод"
+             [(ngModel)]="input"
+             (keyup.enter)="checkTranslate($event.target.value)">
     </mat-form-field>
   </div>
 </div>

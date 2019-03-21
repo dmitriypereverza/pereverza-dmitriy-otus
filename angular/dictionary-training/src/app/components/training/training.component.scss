@@ -11,6 +11,30 @@
   .train-card {
     margin-top: 30px;
     margin-bottom: 30px;
+    width: 350px;
+
+    .result {
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+
+      .result-text {
+
+        .success {
+          color: green;
+        }
+
+        .error {
+          color: red;
+        }
+      }
+
+    }
+
+    .h2 {
+      padding: 20px;
+    }
   }
 
   .answer-field {
