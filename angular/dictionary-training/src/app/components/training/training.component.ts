@@ -43,6 +43,7 @@ export class TrainingComponent implements OnInit {
 
   doNotNow() {
     this.dictionaryService.addProgress(this.trainingWord, false);
+    this.nextWord();
   }
 
   private nextWord () {

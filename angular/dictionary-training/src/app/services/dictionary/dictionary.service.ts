@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { TranslateResponse, TranslateService } from "../translate/translate.service";
 import { Observable } from "rxjs";
+import * as _ from "lodash";
+
+import { TranslateResponse, TranslateService } from "../translate/translate.service";
 import { StorageService } from "../storage/storage.service";
 
 import config from "../../config";
-import * as _ from "lodash";
 
 interface RawWordInterface {
   position: number,

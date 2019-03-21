@@ -17,11 +17,7 @@ export class RecentlyAddedComponent implements OnInit {
   @ViewChild('checkExist') tplCheckExist: TemplateRef<any>;
 
   displayedColumns: string[] = ['select', 'position', 'name', 'translate', 'learningProgress'];
-  dataSource = new MatTableDataSource<WordInterface>([
-    {position: 1, name: 'Hydrogen', translate: 'Водород'},
-    {position: 2, name: 'Helium', translate: 'Гелий'},
-    {position: 3, name: 'Lithium', translate: 'Литий'},
-  ]);
+  dataSource = new MatTableDataSource<WordInterface>();
 
   text = '';
   loading = false;

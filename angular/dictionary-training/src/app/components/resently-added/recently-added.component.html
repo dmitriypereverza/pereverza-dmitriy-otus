@@ -1,12 +1,14 @@
 <div class="recent-container mat-elevation-z8">
   <form class="recent-form">
     <mat-form-field class="input-full-width">
-      <input matInput [(ngModel)]="text"
-             name="add-field"
-             (change)="addField($event.target.value)"
-             placeholder="Добавить новое слово">
+      <div class="input-wrapper">
+        <input matInput [(ngModel)]="text"
+          name="add-field"
+          (change)="addField($event.target.value)"
+          placeholder="Добавить новое слово">
+        <mat-spinner *ngIf="loading" diameter="30"></mat-spinner>
+      </div>
     </mat-form-field>
-    <mat-spinner *ngIf="loading" diameter="30"></mat-spinner>
     <button mat-stroked-button
             *ngIf="selection.selected.length"
             color="warn"
