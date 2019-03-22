@@ -33,7 +33,7 @@ export class RecentlyAddedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const elements = this.dictionaryService.getWordList();
+    const elements = this.dictionaryService.getWordList().reverse();
     if (elements) {
       this.dataSource.data = elements;
     }

@@ -17,6 +17,12 @@ export interface WordInterface {
   name: string;
   translate: string;
   learningProgress?: number;
+  langCode?: string;
+}
+
+export interface LanguageInterface {
+  title: string;
+  code: string;
 }
 
 @Injectable({
