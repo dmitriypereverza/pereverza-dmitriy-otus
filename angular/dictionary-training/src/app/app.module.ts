@@ -15,7 +15,8 @@ import {
   MatButtonModule,
   MatSelectModule,
   MatCardModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatIconModule
 } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -52,7 +53,8 @@ import { RouteNotFoundComponent } from './components/route-not-found/route-not-f
     MatButtonModule,
     MatSelectModule,
     MatCardModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],
