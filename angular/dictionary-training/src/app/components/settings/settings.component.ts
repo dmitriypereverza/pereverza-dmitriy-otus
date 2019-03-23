@@ -25,8 +25,6 @@ export class SettingsComponent implements OnInit {
     {title: 'Греческий', code: 'el'}
   ];
 
-  trainingTime: number = 60;
-
   public settings: SettingsInterface;
 
   constructor(

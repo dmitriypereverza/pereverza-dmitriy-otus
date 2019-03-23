@@ -31,7 +31,7 @@ export class TrainingComponent implements OnInit {
   }
 
   public checkTranslate(text) {
-    this.isSuccess = this.trainingWord.name.toLowerCase() === text.toLowerCase();
+    this.isSuccess = this.trainingWord.translate.toLowerCase() === text.toLowerCase();
 
     this.dictionaryService.addProgress(this.trainingWord, this.isSuccess);
 

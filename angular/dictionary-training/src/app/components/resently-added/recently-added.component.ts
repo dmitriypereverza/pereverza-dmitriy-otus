@@ -6,6 +6,7 @@ import { StorageService } from "../../services/storage/storage.service";
 import { DictionaryService, WordInterface } from "../../services/dictionary/dictionary.service";
 
 import config from "../../config";
+import { SettingsInterface } from "../settings/settings.component";
 
 @Component({
   selector: 'app-recently-added',
@@ -24,7 +25,6 @@ export class RecentlyAddedComponent implements OnInit {
   selection = new SelectionModel<WordInterface>(true, []);
   snackBarConfig: MatSnackBarConfig = { duration: 1500, horizontalPosition: "right" };
 
-
   constructor(
     private cdr: ChangeDetectorRef,
     private storage: StorageService,
@@ -33,7 +33,7 @@ export class RecentlyAddedComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const elements = this.dictionaryService.getWordList().reverse();
+    const elements = this.dictionaryService.getCurrentLangWordList().reverse();
     if (elements) {
       this.dataSource.data = elements;
     }
@@ -54,8 +54,11 @@ export class RecentlyAddedComponent implements OnInit {
     };
     this.dictionaryService.create(rawWord)
       .subscribe((word: WordInterface) => {
+        if (word.name === word.translate) {
+          return;
+        }
         this.dataSource.data = [...this.dataSource.data, word];
-        this.storage.save(config.storageKeyList, this.dataSource.data);
+        this.storage.save(config.storageKeyList, [...this.dictionaryService.getWordList(), word]);
       }, null, () => {
         this.text = '';
         this.loading = false;

@@ -6,6 +6,7 @@ import { TranslateResponse, TranslateService } from "../translate/translate.serv
 import { StorageService } from "../storage/storage.service";
 
 import config from "../../config";
+import { SettingsInterface } from "../../components/settings/settings.component";
 
 interface RawWordInterface {
   position: number,
@@ -36,13 +37,16 @@ export class DictionaryService {
   ) {}
 
   create(word: RawWordInterface): Observable<WordInterface> {
+    const setting = this.storage.get(config.configKey) as SettingsInterface;
+
     return Observable.create(observer => {
-      this.translateService.translate(word.name, 'ru')
+      this.translateService.translate(word.name, setting ? setting.trainingLang : 'en')
         .subscribe((response: TranslateResponse) => {
           observer.next({
             ...word,
             translate: response.text.pop(),
-            learningProgress: 0
+            learningProgress: 0,
+            langCode: setting ? setting.trainingLang : 'en'
           });
           observer.complete();
         })
@@ -70,12 +74,22 @@ export class DictionaryService {
     }));
   }
 
-  getWordList(): WordInterface[] {
-    return this.storage.get(config.storageKeyList)
+  getWordList(lang?): WordInterface[] {
+    const list = this.storage.get(config.storageKeyList) as WordInterface[];
+    return list
+      ? lang
+        ? list.filter(item => item.langCode === lang)
+        : list
+      : [];
+  }
+
+  getCurrentLangWordList() {
+    const setting = this.storage.get(config.configKey) as SettingsInterface;
+    return this.getWordList(setting ? setting.trainingLang : 'en');
   }
 
   getTrainingWord () {
-    const shuffledListWord = _.shuffle(this.getWordList());
+    const shuffledListWord = _.shuffle(this.getCurrentLangWordList());
     return shuffledListWord
       .find(item =>
         item.learningProgress < config.maxTrainingProgress
