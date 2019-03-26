@@ -21,8 +21,19 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RecentlyAddedComponent } from "./components/resently-added/recently-added.component";
+import { TrainingComponent } from "./components/training/training.component";
+import { SettingsComponent } from "./components/settings/settings.component";
+import { RouteNotFoundComponent } from "./components/route-not-found/route-not-found.component";
 
 @NgModule({
+  declarations: [
+    AppComponent,
+    RecentlyAddedComponent,
+    TrainingComponent,
+    SettingsComponent,
+    RouteNotFoundComponent,
+  ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
