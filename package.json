@@ -6,7 +6,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.123",
     "jest": "^23.6.0",
+    "lodash": "^4.17.11",
     "mock-fs": "^4.7.0"
   },
   "jest": {
